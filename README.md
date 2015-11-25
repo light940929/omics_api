@@ -1,3 +1,4 @@
+
 # Omics Pipe API (Version0.1)
 
 
@@ -16,8 +17,32 @@
 3. User would see what api we support.
 4. If user see the modules we have, user could arrange a new pipeline recipe.
 5. API support user to post a new pipeline recipe. If the I/O are not suitable to process, our system will send email to user.
-6. If user have a new module would like to post, our system will make sure these elements will be created or not. That'll need to take time to check the enivornment.
+6. If user have a new module would like to post, our system will make sure these elements will be created or not. That'll need to take time to check the environment.
 
+## Set your settings file
+#### SECURITY WARNING: keep the secret key used in production secret!
+
+```
+SECRET_KEY = 'Django secret key'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'YOUR KEY'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'YOUR SECRET'
+```
+
+##
+
+
+## Requirement
+* Python (2.6, 2.7)
+* Django (1.8)
+* Django REST framework (3.3.1)
+* PyAML (3.11)
+* django-oauth-toolkit(0.9.0)
+* python-social-auth(0.2.13)
+* django-rest-swagger(0.3.4)
+* PIL(1.1.7)
+* django-grappelli(2.7.2)
+* django-filebrowser(3.6.1)
+* djangorestframework-yaml(1.0.2)
 
 ###Request
 --------
@@ -33,7 +58,7 @@
   <td>GET</td>
   <td></td>
   <td>Fetch All Users</td>
- </tr> 
+ </tr>
  <tr>
   <td>/user/:id</td>
   <td>GET</td>
@@ -164,4 +189,4 @@
 
 ### New API version 0.2 are coming~
 
-Follow [@light940929](https://bitbucket.org/HanJenLin/omics_sge) on Github for the latest news.
+Follow [@light940929](https://github.com/light940929/omics_api) on Github for the latest news.
