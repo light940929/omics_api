@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block main %}
+ <div>
+ <h2 class="text-center">Omics Pipe Authentication2.0 DEMO</h2>
+ <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
+ <p>
+   <ul>
+   {% if user and not user.is_anonymous %}
+     <li >
+       <a >Hello {{ user.get_full_name|default:user.username }}~</a>
+       <h3 class="text-center">Welcome Omics Pipe API</h23>
+       <a href="http://localhost:8000/docs/">Omics Pipe API document</a>
+     </li>
+
+   {% else %}
+     <!-- <li>
+       <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
+     </li> -->
+     <!-- <li>
+       <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
+     </li> -->
+     <!-- <li>
+       <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">Login with Twitter</a>
+     </li> -->
+   {% endif %}
+   </ul>
+   <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
+ </p>
+ </div>
+{% endblock %}

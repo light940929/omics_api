@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/fbposter.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet">
+<link href="http://code.jquery.com/jquery-1.7.1.min.js" rel="stylesheet">
+<link href="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js" rel="stylesheet">
+<link href="https://raw.githubusercontent.com/light940929/todolist_wine/master/css/styles.css" rel="stylesheet">
+ <head>
+   <title>{% block title %}Omics Pipe API{% endblock %}</title>
+ </head>
+ <body>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+   <div class="container">
+   	<section id="content">
+      <form class="form-horizontal" method='POST' id='post_login'>
+            <!-- Text input Name-->
+               <!-- <div class="form-group">
+                 <label class="col-md-4 control-label" for="Name">Name</label>
+                 <div class="col-md-3">
+                   <div class="input-group"> <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                     <input id="name" name="name" type="text" placeholder="Enter Your Name" class="form-control input-md" required>
+                   </div>
+                 </div>
+               </div> -->
+
+              <!-- Text input Email-->
+                  <!-- <div class="form-group">
+                    <label class="col-md-4 control-label" for="Email">Email</label>
+                    <div class="col-md-3">
+                      <div class="input-group"> <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                        <input id="email" name="email" type="text" placeholder="Enter Your Email" class="form-control input-md" required>
+                      </div>
+                    </div>
+                  </div> -->
+
+              <!-- Password input-->
+                  <!-- <div class="form-group">
+                    <label class="col-md-4 control-label" for="Password">Password</label>
+                    <div class="col-md-3">
+                      <div class="input-group"> <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                        <input id="password" name="password" type="password" placeholder="Enter Your Password" class="form-control input-md" required>
+                      </div>
+                    </div>
+                  </div> -->
+
+                  <!-- Button login -->
+                    <div class="form-group">
+                      <label class="col-md-4 control-label" for="Login"></label>
+                       <div class="col-md-4">
+                            {% block main %}{% endblock %}
+                      <!-- <button id="btnLogin" name="login" class="btn btn-success" type="button" >Log in</button> -->
+                       <!-- <input id="btnLogin" name="login" class="btn btn-success" type ="button" onclick="javascript:location.href='http://localhost:8000/docs/'"value="Log in"></input> -->
+                       <!-- <a href="#">Lost your password?</a> -->
+                       <!-- <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a> -->
+                       </div>
+                  </div>
+
+                 <!-- Button  register-->
+                    <!-- <div class="form-group">
+                      <label class="col-md-4 control-label" for="Register"></label>
+                      <div class="col-md-4">
+                        <input id="btnRegister" name="register" class="btn btn-success" type ="button" onclick="javascript:location.href='views/register.html'" value="Register new account"></input>
+                      </div>
+                    </div> -->
+
+     </form>
+   	</section><!-- content -->
+   </div><!-- container -->
+ </body>
+</html>
+<!DOCTYPE html>

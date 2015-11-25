@@ -1,0 +1,6 @@
+*.pyc
+bio/*.pyc
+omics_api/*pyc
+uploads/*
+db.sqlite3
+verisign.pem
