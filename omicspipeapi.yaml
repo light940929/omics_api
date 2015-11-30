@@ -1,0 +1,1001 @@
+swagger: '2.0'
+info:
+  title: Omics Pipe API
+  description: This API support user to get pipelines, modules, template we have and then create their piepline recipe with modules we already have.
+  version: 0.0.1
+  contact:
+    name: NIAGADS - OMICS PIPE API
+    email: 'light940929@gmail.com'
+  license:
+    name: MIT
+    url: 'http://opensource.org/licenses/MIT'
+    
+host: aws1niagads.org
+
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+#basePath: /v1
+produces:
+  - application/json
+paths:
+  /categories:
+    get:
+      summary: Category Types
+      description: |
+        Returns all categories from the system that the user could access to.
+      operationId: findCategories
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of category.
+          required: true
+          type: string
+          format: string
+        - name: topic
+          in: query
+          description: The topics you could choose such as ['DNA' or 'RNA' or 'CHIP' or 'OTHER'].
+          required: true
+          type: string
+          format: string
+        - name: tempaltes
+          in: query
+          description: The templates belong with category.
+          required: false
+          type: string
+          format: string
+      tags:
+        - Categories
+      responses:
+        '200':
+          description: category response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/category'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/categories/{id}':
+    get:
+      description: |
+        Returns a user based on a single ID, if the user does not have access to the category.
+      operationId: findCategoryById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of category of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Categories
+      responses:
+        '200':
+          description: category response
+          schema:
+            $ref: '#/definitions/category'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /templates:
+    get:
+      summary: Template Types
+      description: |
+        Returns all templates from the system that the user could access to.
+      operationId: findTemplates
+      produces:
+        - application/json
+      parameters:
+        - name: title
+          in: query
+          description: The name of template.
+          required: true
+          type: string
+          format: string
+        - name: elements
+          in: query
+          description: The elements belong with template.
+          required: false
+          type: string
+          format: string
+        - name: category
+          in: query
+          description: The template belong with category.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Templates
+      responses:
+        '200':
+          description: template response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/template'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/templates/{id}':
+    get:
+      description: |
+        Returns a user based on a single ID, if the user does not have access to the template.
+      operationId: findTemplateById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of template of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Templates
+      responses:
+        '200':
+          description: template response
+          schema:
+            $ref: '#/definitions/template'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /modules:
+    get:
+      summary: Module Types
+      description: |
+        Returns all module from the system that the user could access to.
+      operationId: findModules
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of module.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce module function.
+          required: true
+          type: string
+          format: string
+        - name: scheduler
+          in: query
+          description: The platform you could choose such as ['SGE' or 'PBS' or 'LSF' or 'OTHER'].
+          required: true
+          type: string
+          format: string
+        - name: inputformat
+          in: query
+          description: The format you put input data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
+          required: true
+          type: string
+          format: string  
+        - name: outputformat
+          in: query
+          description: The format you get output data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
+          required: true
+          type: string
+          format: string
+        - name: softwareCitation
+          in: query
+          description: The detail information introduce software.
+          required: false
+          type: string
+          format: string
+        - name: softwareLink
+          in: query
+          description: The detail information introduce software URL.
+          required: false
+          type: string
+          format: string
+        - name: parameters
+          in: query
+          description: The parameters you note such as BWA_RESULTS, BWA_OPTIONS, BWA_VERSION.
+          required: true
+          type: string
+          format: string
+        - name: models
+          in: query
+          description: The models belong with module.  
+          required: false
+          type: string
+          format: string
+      tags:
+        - Modules
+      responses:
+        '200':
+          description: module response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/module'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/modules/{id}':
+    get:
+      description: |
+        Returns a user based on a single ID, if the user does not have access to the module.
+      operationId: findModuleById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of module of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Modules
+      responses:
+        '200':
+          description: module response
+          schema:
+            $ref: '#/definitions/module'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel' 
+  /pipelines:
+    get:
+      summary: Pipeline Types
+      description: |
+        Returns all pipeline from the system that the user could access to.
+      operationId: findPipelines
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of pipeline.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce pipeline.
+          required: true
+          type: string
+          format: string
+        - name: steps
+          in: query
+          description: The detail information about steps of pipeline precess such as ['ModuleName1, ModuleName2&3, ModuleName4'].
+          required: false
+          type: string
+          format: string
+        - name: created
+          in: query
+          description: The time of pipeline is created.
+          required: false
+          type: string
+          format: string
+      tags:
+        - Pipelines
+      responses:
+        '200':
+          description: pipeline response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/pipeline'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/pipelines/{id}':
+    get:
+      description: |
+        Returns a user based on a single ID, if the user does not have access to the pipeline.
+      operationId: findPipelineById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of piepline of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Pipelines
+      responses:
+        '200':
+          description: pipeline response
+          schema:
+            $ref: '#/definitions/pipeline'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel' 
+  /pipelinerecipes:
+    get:
+      summary: Pipeline Recipe Types
+      description: |
+        Returns all pipeline recipes from the system that the user could access to.
+      operationId: findPipelinerecipes
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of pipelinerecipe.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce pipelinerecipe.
+          required: true
+          type: string
+          format: string
+        - name: ingredient
+          in: query
+          description: The raw data such as cbd1, cbd2, cbd3.
+          required: true
+          type: string
+          format: string
+        - name: direction
+          in: query
+          description: The detail information about steps of pipeline precess such as ['ModuleName1, ModuleName2&3, ModuleName4'].
+          required: false
+          type: string
+          format: string
+        - name: equipment
+          in: query
+          description: The process need special version or library such as ['PYTHON_VERSION:2.7.9'].
+          required: false
+          type: string
+          format: string
+        - name: rawdata
+          in: query
+          description: The path of input data.
+          required: true
+          type: string
+          format: string
+        - name: result
+          in: query
+          description: The path of output data.
+          required: true
+          type: string
+          format: string 
+        - name: footnote
+          in: query
+          description: If user need special database or referenc, please give information such as 'MULTICOV_EXONFILE:/refgenomes/mm9/exons.bed'.
+          required: false
+          type: string
+          format: string 
+        - name: created
+          in: query
+          description: The time of pipeline is created.
+          required: false
+          type: string
+          format: string
+      tags:
+        - Pipelinerecipes
+      responses:
+        '200':
+          description: pipelinerecipe response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/pipelinerecipe'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: Creates a new recipe in the pipelinerecipe.
+      operationId: addPipelinerecipe
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of pipelinerecipe.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce pipelinerecipe.
+          required: true
+          type: string
+          format: string
+        - name: ingredient
+          in: query
+          description: The raw data such as cbd1, cbd2, cbd3.
+          required: true
+          type: string
+          format: string
+        - name: direction
+          in: query
+          description: The detail information about steps of pipeline precess such as ['ModuleName1, ModuleName2&3, ModuleName4'].
+          required: false
+          type: string
+          format: string
+        - name: equipment
+          in: query
+          description: The process need special version or library such as 'PYTHON_VERSION:2.7.9'.
+          required: false
+          type: string
+          format: string
+        - name: rawdata
+          in: query
+          description: The path of input data.
+          required: true
+          type: string
+          format: string
+        - name: result
+          in: query
+          description: The path of output data.
+          required: true
+          type: string
+          format: string 
+        - name: footnote
+          in: query
+          description: If user need special database or referenc, please give information such as 'MULTICOV_EXONFILE:/refgenomes/mm9/exons.bed'.
+          required: false
+          type: string
+          format: string 
+      tags:
+        - Pipelinerecipes
+      responses:
+        '201':
+          description: Pipelinerecipe response
+          schema:
+            $ref: '#/definitions/newPipelinerecipe'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/pipelinerecipes/{id}':
+    get:
+      description: |
+        Returns a user based on a single ID, if the user does not have access to the pipelinerecipes.
+      operationId: findPipelinerecipesById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of pipelinerecipes of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Pipelinerecipes
+      responses:
+        '200':
+          description: pipelinerecipes response
+          schema:
+            $ref: '#/definitions/pipelinerecipe'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel' 
+    delete:
+      description: deletes a single recipe based on the ID supplied
+      operationId: deletePipelinerecipe
+      parameters:
+        - name: id
+          in: path
+          description: ID of pipelinerecipe to delete
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Pipelinerecipes
+      responses:
+        '204':
+          description: pipeline recipe deleted
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    patch:
+      description: patch a single recipe based on the ID supplied
+      operationId: patchPipelinerecipe
+      parameters:
+        - name: id
+          in: path
+          description: ID of pipelinerecipe to patch
+          required: true
+          type: integer
+          format: int64
+        - name: name
+          in: query
+          description: The name of pipelinerecipe.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce pipelinerecipe.
+          required: true
+          type: string
+          format: string
+        - name: ingredient
+          in: query
+          description: The raw data such as cbd1, cbd2, cbd3.
+          required: true
+          type: string
+          format: string
+        - name: direction
+          in: query
+          description: The detail information about steps of pipeline precess such as ['ModuleName1, ModuleName2&3, ModuleName4'].
+          required: false
+          type: string
+          format: string
+        - name: equipment
+          in: query
+          description: The process need special version or library such as 'PYTHON_VERSION:2.7.9'.
+          required: false
+          type: string
+          format: string
+        - name: rawdata
+          in: query
+          description: The path of input data.
+          required: true
+          type: string
+          format: string
+        - name: result
+          in: query
+          description: The path of output data.
+          required: true
+          type: string
+          format: string 
+        - name: footnote
+          in: query
+          description: If user need special database or referenc, please give information such as 'MULTICOV_EXONFILE:/refgenomes/mm9/exons.bed'.
+          required: false
+          type: string
+          format: string 
+      tags:
+        - Pipelinerecipes
+      responses:
+        '202':
+          description: pipeline recipe patched
+          schema:
+            $ref: '#/definitions/updatePipelinerecipe'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /modelscripts:
+    get:
+      summary: Script Types
+      description: |
+        Returns all scripts from the system that the user could access to.
+      operationId: findModelscripts
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of script.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce script.
+          required: true
+          type: string
+          format: string
+        - name: inputformat
+          in: query
+          description: The format you put input data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
+          required: true
+          type: string
+          format: string  
+        - name: outputformat
+          in: query
+          description: The format you get output data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
+          required: true
+          type: string
+          format: string
+        - name: parameters
+          in: query
+          description: The parameters you note such as BWA_RESULTS, BWA_OPTIONS, BWA_VERSION.
+          required: true
+          type: string
+          format: string
+        - name: datapath
+          in: query
+          description: The path of script you have.
+          required: true
+          type: string
+          format: string      
+        - name: created
+          in: query
+          description: The time of pipeline is created.
+          required: false
+          type: string
+          format: string
+      tags:
+        - Modelscripes
+      responses:
+        '200':
+          description: modelscript response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/modelscript'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: Creates a new script in the model.
+      operationId: addModelscript
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of script.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce script.
+          required: true
+          type: string
+          format: string
+        - name: inputformat
+          in: query
+          description: The format you put input data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
+          required: true
+          type: string
+          format: string  
+        - name: outputformat
+          in: query
+          description: The format you get output data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
+          required: true
+          type: string
+          format: string
+        - name: parameters
+          in: query
+          description: The parameters you note such as BWA_RESULTS, BWA_OPTIONS, BWA_VERSION.
+          required: true
+          type: string
+          format: string
+        - name: datapath
+          in: query
+          description: The path of script you have.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Modelscripes
+      responses:
+        '201':
+          description: Modelscript response
+          schema:
+            $ref: '#/definitions/newModelscript'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/modelscripts/{id}':
+    get:
+      description: |
+        Returns a user based on a single ID, if the user does not have access to the modelscript.
+      operationId: findModelscriptById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of script of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Modelscripes
+      responses:
+        '200':
+          description: Modelscript response
+          schema:
+            $ref: '#/definitions/modelscript'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel' 
+    delete:
+      description: deletes a single script based on the ID supplied
+      operationId: deleteModelscript
+      parameters:
+        - name: id
+          in: path
+          description: ID of modelscript to delete
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Modelscripes
+      responses:
+        '204':
+          description: script deleted
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    patch:
+      description: patch a single script based on the ID supplied
+      operationId: patchModelscript
+      parameters:
+        - name: id
+          in: path
+          description: ID of modelscript to patch
+          required: true
+          type: integer
+          format: int64
+        - name: name
+          in: query
+          description: The name of modelscript.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce modelscript.
+          required: true
+          type: string
+          format: string
+        - name: inputformat
+          in: query
+          description: The format you put input data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
+          required: true
+          type: string
+          format: string  
+        - name: outputformat
+          in: query
+          description: The format you get output data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
+          required: true
+          type: string
+          format: string
+        - name: parameters
+          in: query
+          description: The parameters you note such as BWA_RESULTS, BWA_OPTIONS, BWA_VERSION.
+          required: true
+          type: string
+          format: string
+        - name: datapath
+          in: query
+          description: The path of script you have.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Modelscripes
+      responses:
+        '202':
+          description: pipeline recipe patched
+          schema:
+            $ref: '#/definitions/updateModelscript'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+
+definitions:
+  category:
+    type: object
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      topic:
+        type: string
+      #templates:
+        #type: {}
+  errorModel:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+  template:
+    type: object
+    required:
+      - id
+
+    properties:
+      id:
+        type: integer
+        format: int64
+      title:
+        type: string
+      elements:
+        type: string
+  module:
+    type: object
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      scheduler:
+        type: string
+      inputformat:
+        type: string
+      outputformat:
+        type: string
+      softwareCitation:
+        type: string
+      softwareLink:
+        type: string
+      parameters:
+        type: string
+      created:
+        type: string
+      #models:
+        #type: {}
+  pipeline:
+    type: object
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+  pipelinerecipe:
+    type: object
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+  newPipelinerecipe:
+    type: object
+    required:
+      - name
+      - description
+      - ingredient
+      - rawdata
+      - result
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      ingredient:
+        type: string
+      direction:
+        type: string
+      equipment:
+        type: string
+      rawdata:
+        type: string
+      result:
+        type: string
+      footnote:
+        type: string
+  updatePipelinerecipe:
+    type: object
+    required:
+      - name
+      - description
+      - ingredient
+      - rawdata
+      - result
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      ingredient:
+        type: string
+      direction:
+        type: string
+      equipment:
+        type: string
+      rawdata:
+        type: string
+      result:
+        type: string
+      footnote:
+        type: string
+  modelscript:
+    type: object
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+  newModelscript:
+    type: object
+    required:
+      - name
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      inputformat:
+        type: string
+      outputformat:
+        type: string
+      parameters:
+        type: string
+      created:
+        type: string
+      datapath:
+        type: string
+  updateModelscript:
+    type: object
+    required:
+      - name
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      inputformat:
+        type: string
+      outputformat:
+        type: string
+      parameters:
+        type: string
+      created:
+        type: string
+      datapath:
+        type: string
