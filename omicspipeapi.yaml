@@ -13,7 +13,7 @@ info:
 host: aws1niagads.org
 
 schemes:
-  - http
+  - https
 consumes:
   - application/json
 produces:
@@ -43,11 +43,12 @@ paths:
           required: true
           type: string
           format: string
+          enum: ['DNA', 'RNA', 'CHIP', 'OTHER']
         - name: tempaltes
           in: query
           description: The templates belong with category.
           required: false
-          type: string
+          type: {}
           format: string
       tags:
         - Categories
@@ -55,7 +56,7 @@ paths:
         '200':
           description: category response
           schema:
-            type: array
+            type: {}
             items:
              $ref: '#/definitions/category'
         default:
@@ -106,13 +107,13 @@ paths:
           in: query
           description: The elements belong with template.
           required: false
-          type: string
+          type: {}
           format: string
         - name: category
           in: query
           description: The template belong with category.
           required: true
-          type: string
+          type: {}
           format: string
       tags:
         - Templates
@@ -120,7 +121,7 @@ paths:
         '200':
           description: template response
           schema:
-            type: array
+            type: {}
             items:
              $ref: '#/definitions/template'
         default:
@@ -179,25 +180,28 @@ paths:
           required: true
           type: string
           format: string
+          enum: ['SGE', 'PBS', 'LSF', 'OTHER']
         - name: inputformat
           in: query
           description: The format you put input data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
           required: true
           type: string
-          format: string  
+          format: string 
+          enum: ['FASTQ', 'SAM', 'BAM', 'VCF', 'BED', 'TXT', 'PDF', 'JPG', 'OTHER']
         - name: outputformat
           in: query
           description: The format you get output data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
           required: true
           type: string
           format: string
-        - name: softwareCitation
+          enum: ['FASTQ', 'SAM', 'BAM', 'VCF', 'BED', 'TXT', 'PDF', 'JPG', 'OTHER']
+        - name: softwarecitation
           in: query
           description: The detail information introduce software.
           required: false
           type: string
           format: string
-        - name: softwareLink
+        - name: softwarelink
           in: query
           description: The detail information introduce software URL.
           required: false
@@ -213,7 +217,7 @@ paths:
           in: query
           description: The models belong with module.  
           required: false
-          type: string
+          type: {}
           format: string
       tags:
         - Modules
@@ -221,7 +225,7 @@ paths:
         '200':
           description: module response
           schema:
-            type: array
+            type: {}
             items:
              $ref: '#/definitions/module'
         default:
@@ -292,7 +296,7 @@ paths:
         '200':
           description: pipeline response
           schema:
-            type: array
+            type: {}
             items:
              $ref: '#/definitions/pipeline'
         default:
@@ -345,13 +349,13 @@ paths:
           required: true
           type: string
           format: string
-        - name: ingredient
+        - name: ingredientname
           in: query
           description: The raw data such as cbd1, cbd2, cbd3.
           required: true
           type: string
           format: string
-        - name: direction
+        - name: steps
           in: query
           description: The detail information about steps of pipeline precess such as ['ModuleName1, ModuleName2&3, ModuleName4'].
           required: false
@@ -363,13 +367,13 @@ paths:
           required: false
           type: string
           format: string
-        - name: rawdata
+        - name: inputpath
           in: query
           description: The path of input data.
           required: true
           type: string
           format: string
-        - name: result
+        - name: resultpath
           in: query
           description: The path of output data.
           required: true
@@ -393,7 +397,7 @@ paths:
         '200':
           description: pipelinerecipe response
           schema:
-            type: array
+            type: {}
             items:
              $ref: '#/definitions/pipelinerecipe'
         default:
@@ -418,13 +422,13 @@ paths:
           required: true
           type: string
           format: string
-        - name: ingredient
+        - name: ingredientname
           in: query
           description: The raw data such as cbd1, cbd2, cbd3.
           required: true
           type: string
           format: string
-        - name: direction
+        - name: steps
           in: query
           description: The detail information about steps of pipeline precess such as ['ModuleName1, ModuleName2&3, ModuleName4'].
           required: false
@@ -436,13 +440,13 @@ paths:
           required: false
           type: string
           format: string
-        - name: rawdata
+        - name: inputpath
           in: query
           description: The path of input data.
           required: true
           type: string
           format: string
-        - name: result
+        - name: resultpath
           in: query
           description: The path of output data.
           required: true
@@ -531,13 +535,13 @@ paths:
           required: true
           type: string
           format: string
-        - name: ingredient
+        - name: ingredientname
           in: query
           description: The raw data such as cbd1, cbd2, cbd3.
           required: true
           type: string
           format: string
-        - name: direction
+        - name: steps
           in: query
           description: The detail information about steps of pipeline precess such as ['ModuleName1, ModuleName2&3, ModuleName4'].
           required: false
@@ -549,13 +553,13 @@ paths:
           required: false
           type: string
           format: string
-        - name: rawdata
+        - name: inputpath
           in: query
           description: The path of input data.
           required: true
           type: string
           format: string
-        - name: result
+        - name: resultpath
           in: query
           description: The path of output data.
           required: true
@@ -604,20 +608,22 @@ paths:
           description: The format you put input data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
           required: true
           type: string
-          format: string  
+          format: string
+          enum: ['FASTQ', 'SAM', 'BAM', 'VCF', 'BED', 'TXT', 'PDF', 'JPG', 'OTHER']
         - name: outputformat
           in: query
           description: The format you get output data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
           required: true
           type: string
-          format: string
+          format: 
+          enum: ['FASTQ', 'SAM', 'BAM', 'VCF', 'BED', 'TXT', 'PDF', 'JPG', 'OTHER']          
         - name: parameters
           in: query
           description: The parameters you note such as BWA_RESULTS, BWA_OPTIONS, BWA_VERSION.
           required: true
           type: string
           format: string
-        - name: datapath
+        - name: scriptpath
           in: query
           description: The path of script you have.
           required: true
@@ -635,7 +641,7 @@ paths:
         '200':
           description: modelscript response
           schema:
-            type: array
+            type: {}
             items:
              $ref: '#/definitions/modelscript'
         default:
@@ -665,20 +671,22 @@ paths:
           description: The format you put input data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
           required: true
           type: string
-          format: string  
+          format: string
+          enum: ['FASTQ', 'SAM', 'BAM', 'VCF', 'BED', 'TXT', 'PDF', 'JPG', 'OTHER']
         - name: outputformat
           in: query
           description: The format you get output data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
           required: true
           type: string
-          format: string
+          format: 
+          enum: ['FASTQ', 'SAM', 'BAM', 'VCF', 'BED', 'TXT', 'PDF', 'JPG', 'OTHER']
         - name: parameters
           in: query
           description: The parameters you note such as BWA_RESULTS, BWA_OPTIONS, BWA_VERSION.
           required: true
           type: string
           format: string
-        - name: datapath
+        - name: scriptpath
           in: query
           description: The path of script you have.
           required: true
@@ -766,20 +774,22 @@ paths:
           description: The format you put input data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
           required: true
           type: string
-          format: string  
+          format: string
+          enum: ['FASTQ', 'SAM', 'BAM', 'VCF', 'BED', 'TXT', 'PDF', 'JPG', 'OTHER']
         - name: outputformat
           in: query
           description: The format you get output data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER'].
           required: true
           type: string
           format: string
+          enum: ['FASTQ', 'SAM', 'BAM', 'VCF', 'BED', 'TXT', 'PDF', 'JPG', 'OTHER']
         - name: parameters
           in: query
           description: The parameters you note such as BWA_RESULTS, BWA_OPTIONS, BWA_VERSION.
           required: true
           type: string
           format: string
-        - name: datapath
+        - name: scriptpath
           in: query
           description: The path of script you have.
           required: true
@@ -803,6 +813,8 @@ definitions:
     required:
       - id
       - name
+      - topic
+      - templates
     properties:
       id:
         type: integer
@@ -811,8 +823,8 @@ definitions:
         type: string
       topic:
         type: string
-      #templates:
-        #type: {}
+      templates:
+        type: {}
   errorModel:
     type: object
     required:
@@ -828,7 +840,7 @@ definitions:
     type: object
     required:
       - id
-
+      - title
     properties:
       id:
         type: integer
@@ -836,12 +848,18 @@ definitions:
       title:
         type: string
       elements:
-        type: string
+        type: {}
   module:
     type: object
     required:
       - id
       - name
+      - description
+      - scheduler
+      - inputformat
+      - outputformat
+      - parameters
+      - models
     properties:
       id:
         type: integer
@@ -856,46 +874,69 @@ definitions:
         type: string
       outputformat:
         type: string
-      softwareCitation:
+      softwarecitation:
         type: string
-      softwareLink:
+      softwarelink:
         type: string
       parameters:
         type: string
       created:
         type: string
-      #models:
-        #type: {}
+      models:
+        type: {}
   pipeline:
     type: object
     required:
       - id
       - name
+      - description
+      - steps
     properties:
       id:
         type: integer
         format: int64
       name:
+        type: string
+      description:
+        type: string
+      steps:
+        type: string
+      created:
         type: string
   pipelinerecipe:
     type: object
     required:
       - id
       - name
+      - description
     properties:
       id:
         type: integer
         format: int64
       name:
         type: string
+      description:
+        type: string
+      ingredientname:
+        type: string
+      steps:
+        type: string
+      equipment:
+        type: string
+      inputpath:
+        type: string
+      resultpath:
+        type: string
+      footnote:
+        type: string
   newPipelinerecipe:
     type: object
     required:
       - name
       - description
-      - ingredient
-      - rawdata
-      - result
+      - ingredientname
+      - inputpath
+      - resultpath
     properties:
       id:
         type: integer
@@ -906,13 +947,13 @@ definitions:
         type: string
       ingredient:
         type: string
-      direction:
+      steps:
         type: string
       equipment:
         type: string
-      rawdata:
+      inputpath:
         type: string
-      result:
+      resultpath:
         type: string
       footnote:
         type: string
@@ -921,9 +962,9 @@ definitions:
     required:
       - name
       - description
-      - ingredient
-      - rawdata
-      - result
+      - ingredientname
+      - inputpath
+      - resultpath
     properties:
       id:
         type: integer
@@ -934,13 +975,13 @@ definitions:
         type: string
       ingredient:
         type: string
-      direction:
+      steps:
         type: string
       equipment:
         type: string
-      rawdata:
+      inputpath:
         type: string
-      result:
+      resultpath:
         type: string
       footnote:
         type: string
@@ -949,16 +990,38 @@ definitions:
     required:
       - id
       - name
+      - description
+      - inputformat
+      - outputformat
+      - parameters
+      - scriptpath
     properties:
       id:
         type: integer
         format: int64
       name:
+        type: string
+      description:
+        type: string
+      inputformat:
+        type: string
+      outputformat:
+        type: string
+      parameters:
+        type: string
+      created:
+        type: string
+      scriptpath:
         type: string
   newModelscript:
     type: object
     required:
       - name
+      - description
+      - inputformat
+      - outputformat
+      - parameters
+      - scriptpath
     properties:
       id:
         type: integer
@@ -975,12 +1038,17 @@ definitions:
         type: string
       created:
         type: string
-      datapath:
+      scriptpath:
         type: string
   updateModelscript:
     type: object
     required:
       - name
+      - description
+      - inputformat
+      - outputformat
+      - parameters
+      - scriptpath
     properties:
       id:
         type: integer
@@ -997,5 +1065,5 @@ definitions:
         type: string
       created:
         type: string
-      datapath:
+      scriptpath:
         type: string
