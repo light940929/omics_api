@@ -45,6 +45,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'YOUR SECRET'
 * djangorestframework-yaml(1.0.2)
 
 ###Request
+About detail Docs: import omicspipeapi.yaml with http://editor.swagger.io/.
 --------
 <table>
  <tr>
