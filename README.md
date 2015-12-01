@@ -54,133 +54,133 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'YOUR SECRET'
    <th>Description</th>
  </tr>
   <tr>
-  <td>/user/</td>
+  <td>/users/</td>
   <td>GET</td>
   <td></td>
   <td>Fetch All Users</td>
  </tr>
  <tr>
-  <td>/user/:id</td>
+  <td>/users/:id</td>
   <td>GET</td>
   <td></td>
   <td>Fetch a User</td>
  </tr>
  <tr>
-  <td>/group/</td>
+  <td>/groups/</td>
   <td>GET</td>
   <td></td>
   <td>Fetch All Groups</td>
  </tr>
  <tr>
-  <td>/group/:id</td>
+  <td>/groups/:id</td>
   <td>GET</td>
   <td></td>
   <td>Fetch a Group</td>
  </tr>
  <tr>
-  <td>/category/</td>
+  <td>/categories/</td>
   <td>GET</td>
   <td></td>
   <td>Fetch All Categories</td>
  </tr>
  <tr>
-  <td>/category/:id</td>
+  <td>/categories/:id</td>
   <td>GET</td>
   <td></td>
   <td>Fetch a Category</td>
  </tr>
  <tr>
-  <td>/template/</td>
+  <td>/templates/</td>
   <td>GET</td>
   <td></td>
   <td>Fetch All Templates</td>
  </tr>
  <tr>
-  <td>/template/:id</td>
+  <td>/templates/:id</td>
   <td>GET</td>
   <td></td>
   <td>Fetch a Template</td>
  </tr>
  <tr>
-  <td>/module/</td>
+  <td>/modules/</td>
   <td>GET</td>
   <td></td>
   <td>Fetch All Modules</td>
  </tr>
  <tr>
-  <td>/module/:id</td>
+  <td>/modules/:id</td>
   <td>GET</td>
   <td></td>
   <td>Fetch a Module</td>
  </tr>
  <tr>
-  <td>/pipeline/</td>
+  <td>/pipelines/</td>
   <td>GET</td>
   <td></td>
   <td>Fetch All Pipelines</td>
  </tr>
  <tr>
-  <td>/pipeline/:id</td>
+  <td>/pipelines/:id</td>
   <td>GET</td>
   <td></td>
   <td>Fetch a Pipeline</td>
  </tr>
  <tr>
-  <td>/pipelinerecipe/</td>
+  <td>/pipelinerecipes/</td>
   <td>POST</td>
   <td>name, description, ingredient, direction, equipment, rawdata, result, footnote</td>
   <td>Create a New pipline recipe</td>
  </tr>
  <tr>
-  <td>/pipelinerecipe/</td>
+  <td>/pipelinerecipes/</td>
   <td>GET</td>
   <td></td>
   <td>Fetch All Pipeline recipes</td>
  </tr>
  <tr>
- <td>/pipelinerecipe/:id</td>
+ <td>/pipelinerecipes/:id</td>
   <td>PATCH</td>
   <td>name, description, ingredient, direction, equipment, rawdata, result, footnote</td>
   <td>Update a pipeline recipe</td>
  </tr>
  <tr>
-  <td>/pipelinerecipe/:id</td>
+  <td>/pipelinerecipes/:id</td>
   <td>GET</td>
   <td></td>
   <td>Fetch a Pipeline recipe</td>
  </tr>
  <tr>
-  <td>/pipelinerecipe/:id</td>
+  <td>/pipelinerecipes/:id</td>
   <td>DELETE</td>
   <td></td>
   <td>Delete a pipeline recipe</td>
  </tr>
  <tr>
-  <td>/modelscript/</td>
+  <td>/modelscripts/</td>
   <td>POST</td>
   <td>name, description, inputformat, outformat, parameters, datapath</td>
   <td>Create a New modelscript</td>
  </tr>
  <tr>
-  <td>/modelscript/</td>
+  <td>/modelscripts/</td>
   <td>GET</td>
   <td></td>
   <td>Fetch All modelscripts</td>
  </tr>
  <tr>
- <td>/modelscript/:id</td>
+ <td>/modelscripts/:id</td>
   <td>PATCH</td>
   <td>name, description, inputformat, outformat, parameters, datapath</td>
   <td>Update a modelscript</td>
  </tr>
  <tr>
-  <td>/modelscript/:id</td>
+  <td>/modelscripts/:id</td>
   <td>GET</td>
   <td></td>
   <td>Fetch a modelscript</td>
  </tr>
  <tr>
-  <td>/modelscript/:id</td>
+  <td>/modelscripts/:id</td>
   <td>DELETE</td>
   <td></td>
   <td>Delete a modelscript</td>
