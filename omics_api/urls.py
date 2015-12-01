@@ -139,35 +139,35 @@ urlpatterns = [
     url('', include('social.apps.django_app.urls', namespace='social')),
     url('', include('django.contrib.auth.urls', namespace='auth')),
 
-    url(r'^user/$', user_list, name='user-list'),
-    url(r'^user/(?P<pk>[0-9]+)/$', user_detail, name='user-detail'),
+    url(r'^users/$', user_list, name='user-list'),
+    url(r'^users/(?P<pk>[0-9]+)/$', user_detail, name='user-detail'),
 
-    url(r'^group/$', group_list, name='group-list'),
-    url(r'^group/(?P<pk>[0-9]+)/$', group_detail, name='group-detail'),
+    url(r'^groups/$', group_list, name='group-list'),
+    url(r'^groups/(?P<pk>[0-9]+)/$', group_detail, name='group-detail'),
 
-    url(r'^category/$', category_list, name='category-list'),
-    url(r'^category/(?P<id>[0-9]+)/$', category_detail, name='category-detail'),
+    url(r'^categories/$', category_list, name='category-list'),
+    url(r'^categories/(?P<id>[0-9]+)/$', category_detail, name='category-detail'),
 
-    url(r'^template/$', template_list, name='template-list'),
-    url(r'^template/(?P<id>[0-9]+)/$', template_detail, name='template-detail'),
+    url(r'^templates/$', template_list, name='template-list'),
+    url(r'^templates/(?P<id>[0-9]+)/$', template_detail, name='template-detail'),
 
     #url(r'^template/(?P<id>[0-9]+)/element/$', element_list, name='element-list'),
     #url(r'^template/(?P<id>[0-9]+)/element/(?P<ck>[0-9]+)/$', element_detail, name='element-detail'),
 
-    url(r'^pipeline/$', module_list, name='module-list'),
-    url(r'^pipeline/(?P<id>[0-9]+)/$', module_detail, name='module-detail'),
+    url(r'^pipelines/$', module_list, name='module-list'),
+    url(r'^pipelines/(?P<id>[0-9]+)/$', module_detail, name='module-detail'),
 
-    url(r'^module/$', moduleElement_list, name='moduleElement-list'),
-    url(r'^module/(?P<id>[0-9]+)/$', moduleElement_detail, name='moduleElement-detail'),
+    url(r'^modules/$', moduleElement_list, name='moduleElement-list'),
+    url(r'^modules/(?P<id>[0-9]+)/$', moduleElement_detail, name='moduleElement-detail'),
 
-    url(r'^modelscript/$', modelScript_list, name='modelScript-list'),
-    url(r'^modelscript/(?P<id>[0-9]+)/$', modelScript_detail, name='modelScript-detail'),
+    url(r'^modelscripts/$', modelScript_list, name='modelScript-list'),
+    url(r'^modelscripts/(?P<id>[0-9]+)/$', modelScript_detail, name='modelScript-detail'),
 
     #url(r'^modelscript/(?P<id>[0-9]+)/script/$', scriptElement_list, name='scriptElement-list'),
     #url(r'^modelscript/(?P<id>[0-9]+)/script/(?P<ck>[0-9]+)/$', scriptElement_detail, name='scriptElement-detail'),
 
-    url(r'^pipelinerecipe/$', recipe_list, name='recipe-list'),
-    url(r'^pipelinerecipe/(?P<id>[0-9]+)/$', recipe_detail, name='recipe-detail'),
+    url(r'^pipelinerecipes/$', recipe_list, name='recipe-list'),
+    url(r'^pipelinerecipes/(?P<id>[0-9]+)/$', recipe_detail, name='recipe-detail'),
 
 ]
 
