@@ -45,7 +45,6 @@ class Element(models.Model):
         return '%s= "%s",' % (self.argument.upper(), self.default)
 
 class ModuleFunction(models.Model):
-
     def validate_file_extension(value):
         if value.file.content_type != 'text/plain':
            raise ValidationError(u'Error message')
@@ -86,8 +85,8 @@ class ModuleElement(models.Model):
     scheduler = models.CharField('Scheduler', max_length=5, choices=TOPIC, help_text='Select your scheduler platform')
     inputformat = models.CharField(max_length=10, choices=FILEFORMAT, help_text='Select your input file format')
     outputformat = models.CharField(max_length=10, choices=FILEFORMAT, help_text='Select your output file format')
-    softwareCitation = models.CharField(max_length=200, help_text='Put about software citation', null=True, blank=True)
-    softwareLink = models.URLField(help_text='Put about software URL', null=True, blank=True) #verify_exists = True,
+    softwarecitation = models.CharField(max_length=200, help_text='Put about software citation', null=True, blank=True)
+    softwarelink = models.URLField(help_text='Put about software URL', null=True, blank=True) #verify_exists = True,
     #parameters = models.ManyToManyField('Element', help_text='Select the parameters you would need')
     parameters = models.CharField(max_length=300, help_text='Put your parameters such as BWA_RESULTS,  BWA_OPTIONS, BWA_VERSION')
     datafile = models.FileField(upload_to='moduleElements', help_text='File path', null=True, blank=True, editable=False)
@@ -121,12 +120,12 @@ class ModelScript(models.Model):
     parameters = models.CharField(max_length=300, help_text='Put your parameters such as BWA_RESULTS,  BWA_OPTIONS, BWA_VERSION')
     datafile = models.FileField(upload_to='scripts', help_text='File path', null=True, blank=True, editable=False)
     created = models.DateTimeField(auto_now_add=True)
-    datapath = models.CharField(max_length=300, help_text='Put file path with the following format: <em>PATH_TO/Script, ServerName</em>.')
+    scriptpath = models.CharField(max_length=300, help_text='Put file path with the following format: <em>PATH_TO/Script, ServerName</em>.')
     model = models.ForeignKey('ModuleElement', related_name='models', help_text='Put your module id', default = '0', editable=False)
     owner = models.ForeignKey(User, editable=False)
 
     class Meta:
-        unique_together = ('name', 'datapath')#, 'model'
+        unique_together = ('name', 'scriptpath')#, 'model'
 
     def __unicode__(self):
         return self.name
@@ -151,7 +150,7 @@ class ScriptElement(models.Model):
     parameters = models.CharField(max_length=300, help_text='Put your parameters such as BWA_RESULTS,  BWA_OPTIONS, BWA_VERSION', null=True, blank=True)
     datafile = models.FileField(upload_to='scriptElements', help_text='File path', null=True, blank=True, editable=False)
     created = models.DateTimeField(auto_now_add=True)
-    datapath = models.CharField(max_length=300, help_text='Put file path with the following format: <em>PATH_TO/Script, ServerName</em>.')
+    scriptpath = models.CharField(max_length=300, help_text='Put file path with the following format: <em>PATH_TO/Script, ServerName</em>.')
     modelscript = models.ForeignKey('ModelScript', related_name='scripts', help_text='Put your model id')
     owner = models.ForeignKey(User, editable=False)
 
@@ -168,11 +167,11 @@ class Document(models.Model):
 class PipelineRecipe(models.Model):
     name = models.CharField(u'Name', max_length=30, help_text='Put your special menu name')
     description = models.CharField(max_length=200, help_text='Describe your ingredients and directions')
-    ingredient = models.CharField(max_length=500, help_text="Please put the name of ingredients with the following format: <em>cbd1, cbd2, cbd3</em>.")
-    direction = models.CharField(max_length=1000,help_text="Please steps by steps with the following format: <em>ModuleName1, ModuleName2&3, ModuleName4</em>.", null=True, blank=True)
+    ingredientname = models.CharField(max_length=500, help_text="Please put the name of ingredients with the following format: <em>cbd1, cbd2, cbd3</em>.")
+    steps = models.CharField(max_length=1000,help_text="Please steps by steps with the following format: <em>ModuleName1, ModuleName2&3, ModuleName4</em>.", null=True, blank=True)
     equipment = models.CharField(max_length=200, help_text="If the process need special version or library, please note with the following format: <em>PYTHON_VERSION: 2.7.9</em>.", null=True, blank=True)
-    rawdata = models.CharField(max_length=400, help_text="Please put the path of raw data")
-    result = models.CharField(max_length=400, help_text="Please put the path of output results")
+    inputpath = models.CharField(max_length=400, help_text="Please put the path of raw data")
+    resultpath = models.CharField(max_length=400, help_text="Please put the path of output results")
     footnote = models.CharField(max_length=500, help_text="If you need special database or reference, please give information with the following format: <em>MULTICOV_EXONFILE: /refgenomes/mm9/exons.bed</em>. ", null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, editable=False)

@@ -102,19 +102,19 @@ class CategorySerializer(serializers.ModelSerializer):
 class ScriptSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScriptElement
-        fields = ('id', 'name', 'description', 'inputformat', 'outputformat', 'parameters', 'datafile', 'created', 'datapath', 'modelscript', 'owner')
+        fields = ('id', 'name', 'description', 'inputformat', 'outputformat', 'parameters', 'datafile', 'created', 'scriptpath', 'modelscript', 'owner')
 
 class ModelScriptSerializer(serializers.ModelSerializer):
     scripts = ScriptSerializer(many=True, read_only=True)
     class Meta:
         model = ModelScript
-        fields = ('id', 'name', 'description', 'inputformat', 'outputformat', 'parameters', 'datafile', 'created', 'datapath', 'scripts', 'owner')#, 'model'
+        fields = ('id', 'name', 'description', 'inputformat', 'outputformat', 'parameters', 'datafile', 'created', 'scriptpath', 'scripts', 'owner')#, 'model'
 
 class ModuleElementSerializer(serializers.ModelSerializer):
     models = ModelScriptSerializer(many=True, read_only=True)
     class Meta:
         model = ModuleElement
-        fields = ('id', 'name', 'description', 'scheduler', 'inputformat', 'outputformat', 'softwareCitation', 'softwareLink', 'parameters', 'datafile', 'created', 'models', 'owner')#, 'function'
+        fields = ('id', 'name', 'description', 'scheduler', 'inputformat', 'outputformat', 'softwarecitation', 'softwarelink', 'parameters', 'datafile', 'created', 'models', 'owner')#, 'function'
 
 class ModuleSerializer(serializers.ModelSerializer):
     #modules = ModuleElementSerializer(many=True, read_only=True)
@@ -125,4 +125,4 @@ class ModuleSerializer(serializers.ModelSerializer):
 class PipelineRecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PipelineRecipe
-        fields = ('id', 'name', 'description', 'ingredient', 'direction', 'equipment', 'rawdata', 'result', 'footnote', 'created', 'owner')
+        fields = ('id', 'name', 'description', 'ingredientname', 'steps', 'equipment', 'inputpath', 'resultpath', 'footnote', 'created', 'owner')
