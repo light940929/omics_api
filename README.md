@@ -1,9 +1,7 @@
 
-# Omics Pipe API (Version0.1)
+# Omics Pipe API (Version 0.0.1)
 
-
-![Omics icon](http://sulab.org/wordpress/wp-content/uploads/2014/06/omics_pipe_final_small.jpg)
-
+[Read more words!](http://aws1niagads.org:8000/about/)
 
 ## Overview
 
