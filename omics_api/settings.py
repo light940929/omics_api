@@ -175,7 +175,7 @@ USE_TZ = True
 
 SWAGGER_SETTINGS = {
     'exclude_namespaces': [],
-    'api_version': '0.1',
+    'api_version': '0.0.2alpha',
     'api_path': '/',
     'enabled_methods': [
         'get',
@@ -187,6 +187,4 @@ SWAGGER_SETTINGS = {
     'is_authenticated': True,
     'is_superuser': False,
     'permission_denied_handler': None,
-    'resource_access_handler': None,
-}
-
+    'resource_access_handler': None,}

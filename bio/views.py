@@ -9,7 +9,7 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.decorators import list_route, detail_route
 from permissions import IsOwnerOrReadOnly
 from permissions import IsAuthenticatedOrCreate
-from bio.serializers import RegisterSerializer, UserSerializer, GroupSerializer, LoginSerializer, PasswordSerializer, CategorySerializer, TemplateSerializer, ElementSerializer, ModuleSerializer, ModuleElementSerializer, ScriptSerializer, ModelScriptSerializer, PipelineRecipeSerializer
+from bio.serializers import RegisterSerializer, UserSerializer, GroupSerializer, LoginSerializer, PasswordSerializer, CategorySerializer, TemplateSerializer, ElementSerializer, ModuleSerializer, ModuleElementSerializer, ScriptSerializer, ModelScriptSerializer, PipelineRecipeSerializer, StepSerializer, StepGroupSerializer, IngredientSerializer, IngredientGroupSerializer, UserCodeGroupSerializer, UserfileSerializer
 from django.contrib.auth import login
 from social.apps.django_app.utils import psa
 from tools import get_access_token
@@ -19,10 +19,11 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from social.actions import do_complete
 from social.apps.django_app.utils import strategy
 from social.apps.django_app.views import _do_login
-from bio.models import Category, Template, Element, ModuleFunction, ModuleElement, ScriptElement, ModelScript, PipelineRecipe
+from bio.models import Category, Template, Element, ModuleFunction, ModuleElement, ScriptElement, ModelScript, PipelineRecipe, Step, StepGroup, Ingredient, IngredientGroup, UserCodeGroup, Userfile
 from itertools import chain
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.http import HttpResponseRedirect
+from django.conf import settings
 
 
 User = get_user_model()
@@ -225,9 +226,9 @@ class ModelScriptViewSet(viewsets.ModelViewSet):
         user = self.request.user
         serializer.save(owner=self.request.user)
 
-    def get_queryset(self):
-        user = self.request.user
-        return ModelScript.objects.filter(owner=user)
+   # def get_queryset(self):
+   #     user = self.request.user
+   #     return ModelScript.objects.filter(owner=user)
 
 class ScriptElementViewSet(viewsets.ModelViewSet):
     """
@@ -274,6 +275,124 @@ class PipelineRecipeViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return PipelineRecipe.objects.filter(owner=user)
+
+
+class StepViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+    """
+    queryset = Step.objects.all()
+    serializer_class = StepSerializer
+    parser_classes = (MultiPartParser, FormParser,)
+    permission_classes = (permissions.IsAuthenticated,)
+    lookup_field = 'id'
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        serializer.save(owner=self.request.user)#, uploaded_file=datafile)
+
+    def get_queryset(self):
+        user = self.request.user
+        return Step.objects.filter(owner=user)
+
+
+class StepGroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+    """
+    queryset = StepGroup.objects.all()
+    serializer_class = StepGroupSerializer
+    parser_classes = (MultiPartParser, FormParser,)
+    permission_classes = (permissions.IsAuthenticated,)
+    lookup_field = 'id'
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        serializer.save(owner=self.request.user)#, uploaded_file=datafile)
+
+    def get_queryset(self):
+        user = self.request.user
+        return StepGroup.objects.filter(owner=user)
+
+
+class IngredientViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+    """
+    queryset = Ingredient.objects.all()
+    serializer_class = IngredientSerializer
+    parser_classes = (MultiPartParser, FormParser,)
+    permission_classes = (permissions.IsAuthenticated,)
+    lookup_field = 'id'
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        serializer.save(owner=self.request.user)#, uploaded_file=datafile)
+
+    def get_queryset(self):
+        user = self.request.user
+        return Ingredient.objects.filter(owner=user)
+
+
+class IngredientGroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+    """
+    queryset = IngredientGroup.objects.all()
+    serializer_class = IngredientGroupSerializer
+    parser_classes = (MultiPartParser, FormParser,)
+    permission_classes = (permissions.IsAuthenticated,)
+    lookup_field = 'id'
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        serializer.save(owner=self.request.user)#, uploaded_file=datafile)
+
+    def get_queryset(self):
+        user = self.request.user
+        return IngredientGroup.objects.filter(owner=user)
+
+
+class UserCodeGroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+    """
+    queryset = UserCodeGroup.objects.all()
+    serializer_class = UserCodeGroupSerializer
+    parser_classes = (MultiPartParser, FormParser,)
+    permission_classes = (permissions.IsAuthenticated,)
+    lookup_field = 'id'
+
+
+class UserfileViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+    """
+    queryset = Userfile.objects.all()
+    serializer_class = UserfileSerializer
+    parser_classes = (MultiPartParser, FormParser,)
+    permission_classes = (permissions.IsAuthenticated,)
+    lookup_field = 'id'
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        serializer.save(owner=self.request.user)#, uploaded_file=datafile)
+
+    def get_queryset(self):
+        user = self.request.user
+        return Userfile.objects.filter(owner=user)
 
 
 from django.shortcuts import render_to_response

@@ -1,13 +1,11 @@
 
-# Omics Pipe API (Version0.1)
+# Omics Pipe API (Version 0.0.2alpha)
 
-
-![Omics icon](http://sulab.org/wordpress/wp-content/uploads/2014/06/omics_pipe_final_small.jpg)
-
+[Read more words!](http://aws1niagads.org:8000/about/)
 
 ## Overview
 
-**Omics Pipe API**: Design for user to know already module we have and then create a new pipeline recipe by yourself on version 0.1 .
+**Omics Pipe API**: Design for user to know already module we have and then create a new pipeline recipe by yourself on version 0.0.2alpha .
 
 
 ## What's workflow?
@@ -188,6 +186,6 @@ About detail Docs: import omicspipeapi.yaml with http://editor.swagger.io/.
  </tr>
 
 
-### New API version 0.2 are coming~
+### New API version 0.0.3 are coming~
 
 Follow [@light940929](https://github.com/light940929/omics_api) on Github for the latest news.

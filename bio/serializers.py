@@ -6,7 +6,7 @@ from django.contrib.auth.hashers import make_password
 from rest_framework.authentication import BasicAuthentication
 from oauth2_provider.models import Application
 from django.contrib.contenttypes.models import ContentType
-from bio.models import Category, Template, Element, ModuleFunction, ModuleElement, ScriptElement, ModelScript, PipelineRecipe
+from bio.models import Category, Template, Element, ModuleFunction, ModuleElement, ScriptElement, ModelScript, PipelineRecipe, Step, StepGroup, Ingredient, IngredientGroup, UserCodeGroup, Userfile
 from itertools import chain
 
 
@@ -108,21 +108,60 @@ class ModelScriptSerializer(serializers.ModelSerializer):
     scripts = ScriptSerializer(many=True, read_only=True)
     class Meta:
         model = ModelScript
-        fields = ('id', 'name', 'description', 'inputformat', 'outputformat', 'parameters', 'datafile', 'created', 'scriptpath', 'scripts', 'owner')#, 'model'
+        fields = ('id', 'name', 'description', 'inputformat', 'outputformat', 'parameters', 'datafile', 'created', 'server', 'scriptpath', 'scripts', 'owner')#, 'model'
 
 class ModuleElementSerializer(serializers.ModelSerializer):
     models = ModelScriptSerializer(many=True, read_only=True)
     class Meta:
         model = ModuleElement
-        fields = ('id', 'name', 'description', 'scheduler', 'inputformat', 'outputformat', 'softwarecitation', 'softwarelink', 'parameters', 'datafile', 'created', 'models', 'owner')#, 'function'
+        fields = ('id', 'name', 'description', 'scheduler', 'inputformat', 'outputformat', 'softwarecitation', 'softwarelink', 'parameters', 'datafile', 'created', 'memory', 'time', 'step', 'models', 'owner')#, 'function'
 
 class ModuleSerializer(serializers.ModelSerializer):
     #modules = ModuleElementSerializer(many=True, read_only=True)
     class Meta:
         model = ModuleFunction
-        fields = ('id', 'name', 'description', 'datafile', 'steps', 'created', 'owner')#, 'modules'
+        fields = ('id', 'name', 'description', 'datafile', 'stepgroups', 'steps', 'created', 'owner')#, 'modules'
 
 class PipelineRecipeSerializer(serializers.ModelSerializer):
+    #ingredients = IngredientSerializer(many=True, read_only=False)
+    #stepgroups = StepGroupSerializer(many=True, read_only=True)
     class Meta:
         model = PipelineRecipe
-        fields = ('id', 'name', 'description', 'ingredientname', 'steps', 'equipment', 'inputpath', 'resultpath', 'footnote', 'created', 'owner')
+        fields = ('id', 'name', 'description', 'ingredients', 'stepgroups', 'equipment', 'resultpath', 'footnote', 'created', 'owner')#, 'inputpath'
+
+class StepSerializer(serializers.ModelSerializer):
+    modules = ModuleElementSerializer(many=True, read_only=True)
+    class Meta:
+        model = Step
+        fields = ('id', 'title', 'scheduler', 'priority', 'follows', 'group', 'modules', 'owner')
+
+class StepGroupSerializer(serializers.ModelSerializer):
+    steps = StepSerializer(many=True, read_only=True)
+    recipes = PipelineRecipeSerializer(many=True, read_only=True)
+    functions = ModuleSerializer(many=True, read_only=True)
+    class Meta:
+        model = StepGroup
+        fields = ('id', 'name', 'topic', 'steps', 'recipes', 'functions', 'owner')
+
+class IngredientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ingredient
+        fields = ('id', 'title', 'server', 'path', 'format', 'group', 'owner')
+
+class IngredientGroupSerializer(serializers.ModelSerializer):
+    ingredients = IngredientSerializer(many=True, read_only=True)
+    recipes = PipelineRecipeSerializer(many=True, read_only=True)
+    class Meta:
+        model = IngredientGroup
+        fields = ('id', 'name', 'topic', 'ingredients', 'recipes', 'owner') #
+
+class UserCodeGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserCodeGroup
+        fields = ('id', 'name')
+
+class UserfileSerializer(serializers.ModelSerializer):
+    models = ModelScriptSerializer(many=True, read_only=True)
+    class Meta:
+        model = Userfile
+        fields = ('id', 'name','server', 'path', 'models', 'owner')

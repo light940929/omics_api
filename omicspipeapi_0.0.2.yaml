@@ -1,0 +1,2529 @@
+swagger: '2.0'
+info:
+  title: Omics Pipe API
+  description: 'This API support user to get pipelines, modules, template we have and then create their piepline recipe with modules we already have.'
+  version: 0.0.2 alpha
+  contact:
+    name: NIAGADS - OMICS PIPE API
+    email: light940929@gmail.com
+  license:
+    name: MIT
+    url: 'http://opensource.org/licenses/MIT'
+host: aws1niagads.org
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /categories:
+    get:
+      summary: Category Types
+      description: |
+        Returns all categories from the system that the user could access to.
+      operationId: findCategories
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of category.
+          required: true
+          type: string
+          format: string
+        - name: topic
+          in: query
+          description: "The topics you could choose such as ['DNA' or 'RNA' or 'CHIP' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - DNA
+            - RNA
+            - CHIP
+            - OTHER
+        - name: tempaltes
+          in: query
+          description: The templates belong with category.
+          required: false
+          type: {}
+          format: string
+      tags:
+        - Categories
+      responses:
+        '200':
+          description: category response
+          schema:
+            type: {}
+            items:
+              $ref: '#/definitions/category'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/categories/{id}':
+    get:
+      description: >
+        Returns a user based on a single ID, if the user does not have access to
+        the category.
+      operationId: findCategoryById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of category of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Categories
+      responses:
+        '200':
+          description: category response
+          schema:
+            $ref: '#/definitions/category'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /templates:
+    get:
+      summary: Template Types
+      description: |
+        Returns all templates from the system that the user could access to.
+      operationId: findTemplates
+      produces:
+        - application/json
+      parameters:
+        - name: title
+          in: query
+          description: The name of template.
+          required: true
+          type: string
+          format: string
+        - name: elements
+          in: query
+          description: The elements belong with template.
+          required: false
+          type: {}
+          format: string
+        - name: category
+          in: query
+          description: The template belong with category.
+          required: true
+          type: {}
+          format: string
+      tags:
+        - Templates
+      responses:
+        '200':
+          description: template response
+          schema:
+            type: {}
+            items:
+              $ref: '#/definitions/template'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/templates/{id}':
+    get:
+      description: >
+        Returns a user based on a single ID, if the user does not have access to
+        the template.
+      operationId: findTemplateById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of template of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Templates
+      responses:
+        '200':
+          description: template response
+          schema:
+            $ref: '#/definitions/template'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /modules:
+    get:
+      summary: Module Types
+      description: |
+        Returns all module from the system that the user could access to.
+      operationId: findModules
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of module.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce module function.
+          required: true
+          type: string
+          format: string
+        - name: scheduler
+          in: query
+          description: "The platform you could choose such as ['SGE' or 'PBS' or 'LSF' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - SGE
+            - PBS
+            - LSF
+            - OTHER
+        - name: inputformat
+          in: query
+          description: "The format you put input data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - FASTQ
+            - SAM
+            - BAM
+            - VCF
+            - BED
+            - TXT
+            - PDF
+            - JPG
+            - OTHER
+        - name: outputformat
+          in: query
+          description: "The format you get output data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - FASTQ
+            - SAM
+            - BAM
+            - VCF
+            - BED
+            - TXT
+            - PDF
+            - JPG
+            - OTHER
+        - name: softwarecitation
+          in: query
+          description: The detail information introduce software.
+          required: false
+          type: string
+          format: string
+        - name: softwarelink
+          in: query
+          description: The detail information introduce software URL.
+          required: false
+          type: string
+          format: string
+        - name: parameters
+          in: query
+          description: 'The parameters you note such as BWA_RESULTS, BWA_OPTIONS, BWA_VERSION.'
+          required: true
+          type: string
+          format: string
+        - name: created
+          in: query
+          description: The time of module is created.
+          required: false
+          type: string
+          format: string   
+        - name: memory
+          in: query
+          description: The memeory of module needs.
+          required: true
+          type: string
+          format: string
+        - name: time
+          in: query
+          description: The time of module needs.
+          required: true
+          type: string
+          format: string
+        - name: step
+          in: query
+          description: The step which created with the api /steps belong with module.
+          required: true
+          type: {}
+          format: string
+        - name: models
+          in: query
+          description: The models belong with module.
+          required: false
+          type: {}
+          format: string
+        
+      tags:
+        - Modules
+      responses:
+        '200':
+          description: module response
+          schema:
+            type: {}
+            items:
+              $ref: '#/definitions/module'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/modules/{id}':
+    get:
+      description: >
+        Returns a user based on a single ID, if the user does not have access to
+        the module.
+      operationId: findModuleById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of module of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Modules
+      responses:
+        '200':
+          description: module response
+          schema:
+            $ref: '#/definitions/module'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /pipelines:
+    get:
+      summary: Pipeline Types
+      description: |
+        Returns all pipeline from the system that the user could access to.
+      operationId: findPipelines
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of pipeline.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce pipeline.
+          required: true
+          type: string
+          format: string
+        - name: stepgroups
+          in: query
+          description: You would create group of steps with api    /stepgroups and then put ID of stepgroups to this parameter.
+          required: true
+          type: {}
+          format: string
+        - name: steps
+          in: query
+          description: "The detail information about steps of pipeline precess such as ['ModuleName1, ModuleName2&3, ModuleName4']."
+          required: true
+          type: string
+          format: string
+        - name: created
+          in: query
+          description: The time of pipeline is created.
+          required: false
+          type: string
+          format: string
+      tags:
+        - Pipelines
+      responses:
+        '200':
+          description: pipeline response
+          schema:
+            type: {}
+            items:
+              $ref: '#/definitions/pipeline'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/pipelines/{id}':
+    get:
+      description: >
+        Returns a user based on a single ID, if the user does not have access to
+        the pipeline.
+      operationId: findPipelineById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of piepline of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Pipelines
+      responses:
+        '200':
+          description: pipeline response
+          schema:
+            $ref: '#/definitions/pipeline'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /pipelinerecipes:
+    get:
+      summary: Pipeline Recipe Types
+      description: >
+        Returns all pipeline recipes from the system that the user could access
+        to.
+      operationId: findPipelinerecipes
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of pipelinerecipe.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce pipelinerecipe.
+          required: true
+          type: string
+          format: string
+        - name: ingredients
+          in: query
+          description: You would create ingredients with api /ingredients and these ingredients belong ingredientgroups. Please input ID of ingredientgroups in this parameter.
+          required: false
+          type: {}
+          format: string
+        - name: stepgroups
+          in: query
+          description: You would create steps with api /steps and these steps belong stepgroups. Please input ID of stepgroups in this parameter.
+          required: false
+          type: {}
+          format: string
+        - name: equipment
+          in: query
+          description: "The process need special version or library such as ['PYTHON_VERSION:2.7.9']."
+          required: false
+          type: string
+          format: string
+        - name: resultpath
+          in: query
+          description: The path of output data.
+          required: true
+          type: string
+          format: string
+        - name: footnote
+          in: query
+          description: "If user need special database or referenc, please give information such as 'MULTICOV_EXONFILE:/refgenomes/mm9/exons.bed'."
+          required: false
+          type: string
+          format: string
+        - name: created
+          in: query
+          description: The time of pipeline is created.
+          required: false
+          type: string
+          format: string
+      tags:
+        - Pipelinerecipes
+      responses:
+        '200':
+          description: pipelinerecipe response
+          schema:
+            type: {}
+            items:
+              $ref: '#/definitions/pipelinerecipe'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: Creates a new recipe in the pipelinerecipe.
+      operationId: addPipelinerecipe
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of pipelinerecipe.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce pipelinerecipe.
+          required: true
+          type: string
+          format: string
+        - name: ingredients
+          in: query
+          description: You would create ingredients with api /ingredients and these ingredients belong ingredientgroups. Please input ID of ingredientgroups in this parameter.
+          required: true
+          type: {}
+          format: string
+        - name: stepgroups
+          in: query
+          description: You would create steps with api /steps and these steps belong stepgroups. Please input ID of stepgroups in this parameter.
+          required: true
+          type: {}
+          format: string
+        - name: equipment
+          in: query
+          description: "The process need special version or library such as 'PYTHON_VERSION:2.7.9'."
+          required: false
+          type: string
+          format: string
+        - name: resultpath
+          in: query
+          description: The path of output data.
+          required: true
+          type: string
+          format: string
+        - name: footnote
+          in: query
+          description: "If user need special database or referenc, please give information such as 'MULTICOV_EXONFILE:/refgenomes/mm9/exons.bed'."
+          required: false
+          type: string
+          format: string
+      tags:
+        - Pipelinerecipes
+      responses:
+        '201':
+          description: Pipelinerecipe response
+          schema:
+            $ref: '#/definitions/newPipelinerecipe'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/pipelinerecipes/{id}':
+    get:
+      description: >
+        Returns a user based on a single ID, if the user does not have access to
+        the pipelinerecipes.
+      operationId: findPipelinerecipesById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of pipelinerecipes of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Pipelinerecipes
+      responses:
+        '200':
+          description: pipelinerecipes response
+          schema:
+            $ref: '#/definitions/pipelinerecipe'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    delete:
+      description: deletes a single recipe based on the ID supplied
+      operationId: deletePipelinerecipe
+      parameters:
+        - name: id
+          in: path
+          description: ID of pipelinerecipe to delete
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Pipelinerecipes
+      responses:
+        '204':
+          description: pipeline recipe deleted
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    patch:
+      description: patch a single recipe based on the ID supplied
+      operationId: patchPipelinerecipe
+      parameters:
+        - name: id
+          in: path
+          description: ID of pipelinerecipe to patch
+          required: true
+          type: integer
+          format: int64
+        - name: name
+          in: query
+          description: The name of pipelinerecipe.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce pipelinerecipe.
+          required: true
+          type: string
+          format: string
+        - name: ingredients
+          in: query
+          description: You would create ingredients with api /ingredients and these ingredients belong ingredientgroups. Please input ID of ingredientgroups in this parameter.
+          required: false
+          type: {}
+          format: string
+        - name: stepgroups
+          in: query
+          description: You would create steps with api /steps and these steps belong stepgroups. Please input ID of stepgroups in this parameter.
+          required: false
+          type: {}
+          format: string
+        - name: equipment
+          in: query
+          description: "The process need special version or library such as 'PYTHON_VERSION:2.7.9'."
+          required: false
+          type: string
+          format: string
+        - name: resultpath
+          in: query
+          description: The path of output data.
+          required: true
+          type: string
+          format: string
+        - name: footnote
+          in: query
+          description: "If user need special database or referenc, please give information such as 'MULTICOV_EXONFILE:/refgenomes/mm9/exons.bed'."
+          required: false
+          type: string
+          format: string
+      tags:
+        - Pipelinerecipes
+      responses:
+        '202':
+          description: pipeline recipe patched
+          schema:
+            $ref: '#/definitions/updatePipelinerecipe'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /modelscripts:
+    get:
+      summary: Script Types
+      description: |
+        Returns all scripts from the system that the user could access to.
+      operationId: findModelscripts
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of script.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce script.
+          required: true
+          type: string
+          format: string
+        - name: inputformat
+          in: query
+          description: "The format you put input data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - FASTQ
+            - SAM
+            - BAM
+            - VCF
+            - BED
+            - TXT
+            - PDF
+            - JPG
+            - OTHER
+        - name: outputformat
+          in: query
+          description: "The format you get output data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER']."
+          required: true
+          type: string
+          format: null
+          enum:
+            - FASTQ
+            - SAM
+            - BAM
+            - VCF
+            - BED
+            - TXT
+            - PDF
+            - JPG
+            - OTHER
+        - name: parameters
+          in: query
+          description: 'The parameters you note such as BWA_RESULTS, BWA_OPTIONS, BWA_VERSION.'
+          required: true
+          type: string
+          format: string
+        - name: server
+          in: query
+          description: "The server you put scripts such as in  ['AWS' or 'PMACS' or 'TESLA' or 'CAJAL' or 'OTHER']."
+          required: true
+          type: string
+          format: null
+          enum:
+            - AWS
+            - PMACS
+            - TESLA
+            - CAJAL
+            - OTHER
+        - name: scriptpath
+          in: query
+          description: The path of script you have.
+          required: true
+          type: string
+          format: string
+        - name: created
+          in: query
+          description: The time of pipeline is created.
+          required: false
+          type: string
+          format: string
+      tags:
+        - Modelscripes
+      responses:
+        '200':
+          description: modelscript response
+          schema:
+            type: {}
+            items:
+              $ref: '#/definitions/modelscript'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: Creates a new script in the model.
+      operationId: addModelscript
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of script.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce script.
+          required: true
+          type: string
+          format: string
+        - name: inputformat
+          in: query
+          description: "The format you put input data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - FASTQ
+            - SAM
+            - BAM
+            - VCF
+            - BED
+            - TXT
+            - PDF
+            - JPG
+            - OTHER
+        - name: outputformat
+          in: query
+          description: "The format you get output data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER']."
+          required: true
+          type: string
+          format: null
+          enum:
+            - FASTQ
+            - SAM
+            - BAM
+            - VCF
+            - BED
+            - TXT
+            - PDF
+            - JPG
+            - OTHER
+        - name: parameters
+          in: query
+          description: 'The parameters you note such as BWA_RESULTS, BWA_OPTIONS, BWA_VERSION.'
+          required: true
+          type: string
+          format: string
+        - name: server
+          in: query
+          description: "The server you put scripts such as in  ['AWS' or 'PMACS' or 'TESLA' or 'CAJAL' or 'OTHER']."
+          required: true
+          type: string
+          format: null
+          enum:
+            - AWS
+            - PMACS
+            - TESLA
+            - CAJAL
+            - OTHER
+        - name: scriptpath
+          in: query
+          description: The path of script you have.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Modelscripes
+      responses:
+        '201':
+          description: Modelscript response
+          schema:
+            $ref: '#/definitions/newModelscript'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/modelscripts/{id}':
+    get:
+      description: >
+        Returns a user based on a single ID, if the user does not have access to
+        the modelscript.
+      operationId: findModelscriptById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of script of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Modelscripes
+      responses:
+        '200':
+          description: Modelscript response
+          schema:
+            $ref: '#/definitions/modelscript'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    delete:
+      description: deletes a single script based on the ID supplied
+      operationId: deleteModelscript
+      parameters:
+        - name: id
+          in: path
+          description: ID of modelscript to delete
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Modelscripes
+      responses:
+        '204':
+          description: script deleted
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    patch:
+      description: patch a single script based on the ID supplied
+      operationId: patchModelscript
+      parameters:
+        - name: id
+          in: path
+          description: ID of modelscript to patch
+          required: true
+          type: integer
+          format: int64
+        - name: name
+          in: query
+          description: The name of modelscript.
+          required: true
+          type: string
+          format: string
+        - name: description
+          in: query
+          description: The detail information introduce modelscript.
+          required: true
+          type: string
+          format: string
+        - name: inputformat
+          in: query
+          description: "The format you put input data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - FASTQ
+            - SAM
+            - BAM
+            - VCF
+            - BED
+            - TXT
+            - PDF
+            - JPG
+            - OTHER
+        - name: outputformat
+          in: query
+          description: "The format you get output data such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - FASTQ
+            - SAM
+            - BAM
+            - VCF
+            - BED
+            - TXT
+            - PDF
+            - JPG
+            - OTHER
+        - name: parameters
+          in: query
+          description: 'The parameters you note such as BWA_RESULTS, BWA_OPTIONS, BWA_VERSION.'
+          required: true
+          type: string
+          format: string
+        - name: server
+          in: query
+          description: "The server you put scripts such as in  ['AWS' or 'PMACS' or 'TESLA' or 'CAJAL' or 'OTHER']."
+          required: true
+          type: string
+          format: null
+          enum:
+            - AWS
+            - PMACS
+            - TESLA
+            - CAJAL
+            - OTHER
+        - name: scriptpath
+          in: query
+          description: The path of script you have.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Modelscripes
+      responses:
+        '202':
+          description: modelscript patched
+          schema:
+            $ref: '#/definitions/updateModelscript'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+            
+  # add new on version 0.0.2
+  /ingredientgroups:
+    get:
+      summary: The group of ingredient Types
+      description: |
+        Returns all groups of ingredient from the system that the user could access to.
+      operationId: findIngredientgroups
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of group.
+          required: true
+          type: string
+          format: string
+        - name: topic
+          in: query
+          description: "The topics you could choose such as ['DNA' or 'RNA' or 'CHIP' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - DNA
+            - RNA
+            - CHIP
+            - OTHER
+        - name: ingredients
+          in: query
+          description: The ingredients belong in this group.
+          required: false
+          type: {}
+          format: string
+        - name: recipes
+          in: query
+          description: The recipes include this group.
+          required: false
+          type: {}
+          format: string
+      tags:
+        - Ingredientgroups
+      responses:
+        '200':
+          description: ingredientgroup response
+          schema:
+            type: {}
+            items:
+              $ref: '#/definitions/ingredientgroup'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: Creates a new group in these ingredients.
+      operationId: addIngredientgroup
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of ingredientgroup.
+          required: true
+          type: string
+          format: string
+        - name: topic
+          in: query
+          description: "The topics you could choose such as ['DNA' or 'RNA' or 'CHIP' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - DNA
+            - RNA
+            - CHIP
+            - OTHER
+      tags:
+        - Ingredientgroups
+      responses:
+        '201':
+          description: Ingredientgroup response
+          schema:
+            $ref: '#/definitions/newIngredientgroup'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/ingredientgroups/{id}':
+    get:
+      description: >
+        Returns a user based on a single ID, if the user does not have access to
+        the ingredientgroups.
+      operationId: findIngredientgroupById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of ingredientgroup of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Ingredientgroups
+      responses:
+        '200':
+          description: Ingredientgroup response
+          schema:
+            $ref: '#/definitions/ingredientgroup'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    delete:
+      description: deletes a single ingredientgroup based on the ID supplied
+      operationId: deleteIngredientgroup
+      parameters:
+        - name: id
+          in: path
+          description: ID of ingredientgroup to delete
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Ingredientgroups
+      responses:
+        '204':
+          description: ingredientgroup deleted
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    patch:
+      description: patch a single ingredientgroup based on the ID supplied
+      operationId: patchIngredientgroup
+      parameters:
+        - name: id
+          in: path
+          description: ID of ingredientgroup to patch
+          required: true
+          type: integer
+          format: int64
+        - name: name
+          in: query
+          description: The name of ingredientgroup.
+          required: true
+          type: string
+          format: string
+        - name: topic
+          in: query
+          description: "The topics you could choose such as ['DNA' or 'RNA' or 'CHIP' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - DNA
+            - RNA
+            - CHIP
+            - OTHER
+      tags:
+        - Ingredientgroups
+      responses:
+        '202':
+          description: ingredientgroup patched
+          schema:
+            $ref: '#/definitions/updateIngredientgroup'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+            
+  /ingredients:
+    get:
+      summary: Ingredient Types
+      description: |
+        Returns all ingredients from the system that the user could access to.
+      operationId: findIngredients
+      produces:
+        - application/json
+      parameters:
+        - name: title
+          in: query
+          description: The title of ingredient.
+          required: true
+          type: string
+          format: string
+        - name: topic
+          in: query
+          description: "The topics you could choose such as ['DNA' or 'RNA' or 'CHIP' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - DNA
+            - RNA
+            - CHIP
+            - OTHER
+        - name: server
+          in: query
+          description: "The server you put ingredients such as in  ['AWS' or 'PMACS' or 'TESLA' or 'CAJAL' or 'OTHER']."
+          required: true
+          type: string
+          format: null
+          enum:
+            - AWS
+            - PMACS
+            - TESLA
+            - CAJAL
+            - OTHER
+        - name: path
+          in: query
+          description: The ingredients locate on this path.
+          required: true
+          type: string
+          format: string
+        - name: format
+          in: query
+          description: "The format you put ingredients such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - FASTQ
+            - SAM
+            - BAM
+            - VCF
+            - BED
+            - TXT
+            - PDF
+            - JPG
+            - OTHER
+        - name: group
+          in: query
+          description: The ingredients belong which group. You would input ID of ingredientgroup.
+          required: true
+          type: {}
+          format: string
+      tags:
+        - Ingredients
+      responses:
+        '200':
+          description: ingredient response
+          schema:
+            type: {}
+            items:
+              $ref: '#/definitions/ingredient'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: Creates a new ingredient.
+      operationId: addIngredient
+      produces:
+        - application/json
+      parameters:
+        - name: title
+          in: query
+          description: The title of ingredient.
+          required: true
+          type: string
+          format: string
+        - name: topic
+          in: query
+          description: "The topics you could choose such as ['DNA' or 'RNA' or 'CHIP' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - DNA
+            - RNA
+            - CHIP
+            - OTHER
+        - name: server
+          in: query
+          description: "The server you put ingredients such as in  ['AWS' or 'PMACS' or 'TESLA' or 'CAJAL' or 'OTHER']."
+          required: true
+          type: string
+          format: null
+          enum:
+            - AWS
+            - PMACS
+            - TESLA
+            - CAJAL
+            - OTHER
+        - name: path
+          in: query
+          description: The ingredients locate on this path.
+          required: true
+          type: string
+          format: string
+        - name: format
+          in: query
+          description: "The format you put ingredients such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - FASTQ
+            - SAM
+            - BAM
+            - VCF
+            - BED
+            - TXT
+            - PDF
+            - JPG
+            - OTHER
+        - name: group
+          in: query
+          description: The ingredients belong which group. You would input ID of ingredientgroup.
+          required: true
+          type: {}
+          format: string
+      tags:
+        - Ingredients
+      responses:
+        '201':
+          description: Ingredient response
+          schema:
+            $ref: '#/definitions/newIngredient'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/ingredients/{id}':
+    get:
+      description: >
+        Returns a user based on a single ID, if the user does not have access to
+        the ingredients.
+      operationId: findIngredientById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of ingredient of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Ingredients
+      responses:
+        '200':
+          description: Ingredient response
+          schema:
+            $ref: '#/definitions/ingredient'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    delete:
+      description: deletes a single ingredient based on the ID supplied
+      operationId: deleteIngredient
+      parameters:
+        - name: id
+          in: path
+          description: ID of ingredient to delete
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Ingredients
+      responses:
+        '204':
+          description: ingredient deleted
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    patch:
+      description: patch a single ingredient based on the ID supplied
+      operationId: patchIngredient
+      parameters:
+        - name: id
+          in: path
+          description: ID of ingredient to patch
+          required: true
+          type: integer
+          format: int64
+        - name: title
+          in: query
+          description: The title of ingredient.
+          required: true
+          type: string
+          format: string
+        - name: topic
+          in: query
+          description: "The topics you could choose such as ['DNA' or 'RNA' or 'CHIP' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - DNA
+            - RNA
+            - CHIP
+            - OTHER
+        - name: server
+          in: query
+          description: "The server you put ingredients such as in  ['AWS' or 'PMACS' or 'TESLA' or 'CAJAL' or 'OTHER']."
+          required: true
+          type: string
+          format: null
+          enum:
+            - AWS
+            - PMACS
+            - TESLA
+            - CAJAL
+            - OTHER
+        - name: path
+          in: query
+          description: The ingredients locate on this path.
+          required: true
+          type: string
+          format: string
+        - name: format
+          in: query
+          description: "The format you put ingredients such as  ['FASTQ' or 'SAM' or 'BAM' or 'VCF' or 'BED' or 'TXT' or 'PDF' or 'JPG' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - FASTQ
+            - SAM
+            - BAM
+            - VCF
+            - BED
+            - TXT
+            - PDF
+            - JPG
+            - OTHER
+        - name: group
+          in: query
+          description: The ingredients belong which group. You would input ID of ingredientgroup.
+          required: true
+          type: {}
+          format: string
+      tags:
+        - Ingredients
+      responses:
+        '202':
+          description: ingredient patched
+          schema:
+            $ref: '#/definitions/updateIngredient'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  
+  /stepgroups:
+    get:
+      summary: The group of step Types
+      description: |
+        Returns all groups of ingredient from the system that the user could access to.
+      operationId: findIngredientgroups
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of group.
+          required: true
+          type: string
+          format: string
+        - name: topic
+          in: query
+          description: "The topics you could choose such as ['DNA' or 'RNA' or 'CHIP' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - DNA
+            - RNA
+            - CHIP
+            - OTHER
+        - name: steps
+          in: query
+          description: The steps belong in this group.
+          required: false
+          type: {}
+          format: string
+        - name: recipes
+          in: query
+          description: The recipes include this group.
+          required: false
+          type: {}
+          format: string
+        - name: functions
+          in: query
+          description: The runctions include this group.
+          required: false
+          type: {}
+          format: string
+      tags:
+        - Stepgroups
+      responses:
+        '200':
+          description: stepgroup response
+          schema:
+            type: {}
+            items:
+              $ref: '#/definitions/stepgroup'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: Creates a new group in these steps.
+      operationId: addStepgroup
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of stepgroup.
+          required: true
+          type: string
+          format: string
+        - name: topic
+          in: query
+          description: "The topics you could choose such as ['DNA' or 'RNA' or 'CHIP' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - DNA
+            - RNA
+            - CHIP
+            - OTHER
+      tags:
+        - Stepgroups
+      responses:
+        '201':
+          description: Stepgroup response
+          schema:
+            $ref: '#/definitions/newStepgroup'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/stepgroups/{id}':
+    get:
+      description: >
+        Returns a user based on a single ID, if the user does not have access to
+        the stepgroups.
+      operationId: findStepgroupById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of stepgroup of fetch.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Stepgroups
+      responses:
+        '200':
+          description: Stepgroup response
+          schema:
+            $ref: '#/definitions/stepgroup'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    delete:
+      description: deletes a single stepgroup based on the ID supplied
+      operationId: deleteStepgroup
+      parameters:
+        - name: id
+          in: path
+          description: ID of stepgroup to delete
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Stepgroups
+      responses:
+        '204':
+          description: stepgroup deleted
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    patch:
+      description: patch a single stepgroup based on the ID supplied
+      operationId: patchStepgroup
+      parameters:
+        - name: id
+          in: path
+          description: ID of stepgroup to patch
+          required: true
+          type: integer
+          format: int64
+        - name: name
+          in: query
+          description: The name of stepgroup.
+          required: true
+          type: string
+          format: string
+        - name: topic
+          in: query
+          description: "The topics you could choose such as ['DNA' or 'RNA' or 'CHIP' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - DNA
+            - RNA
+            - CHIP
+            - OTHER
+      tags:
+        - Stepgroups
+      responses:
+        '202':
+          description: stepgroup patched
+          schema:
+            $ref: '#/definitions/updateStepgroup'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+            
+  /steps:
+    get:
+      summary: Step Types
+      description: |
+        Returns all steps from the system that the user could access to.
+      operationId: findSteps
+      produces:
+        - application/json
+      parameters:
+        - name: title
+          in: query
+          description: The title of ingredient.
+          required: true
+          type: string
+          format: string
+        - name: scheduler
+          in: query
+          description: "The platform you could choose such as ['SGE' or 'PBS' or 'LSF' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - SGE
+            - PBS
+            - LSF
+            - OTHER
+        - name: priority
+          in: query
+          description: "The priority you could choose such as  ['LOW' or 'NORMAL' or 'HIGH' or 'HIGHEST']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - LOW
+            - NORMAL
+            - HIGH
+            - HIGHEST
+        - name: follows
+          in: query
+          description: Select steps these have to processed before this step. You would input ID of the step in this parameter.
+          required: false
+          type: string
+          format: string
+        - name: group
+          in: query
+          description: The steps belong which group. You would input ID of stepgroup.
+          required: true
+          type: {}
+          format: string
+      tags:
+        - Steps
+      responses:
+        '200':
+          description: step response
+          schema:
+            type: {}
+            items:
+              $ref: '#/definitions/step'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: Creates a new step.
+      operationId: addStep
+      produces:
+        - application/json
+      parameters:
+        - name: title
+          in: query
+          description: The title of ingredient.
+          required: true
+          type: string
+          format: string
+        - name: scheduler
+          in: query
+          description: "The platform you could choose such as ['SGE' or 'PBS' or 'LSF' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - SGE
+            - PBS
+            - LSF
+            - OTHER
+        - name: priority
+          in: query
+          description: "The priority you could choose such as  ['LOW' or 'NORMAL' or 'HIGH' or 'HIGHEST']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - LOW
+            - NORMAL
+            - HIGH
+            - HIGHEST
+        - name: follows
+          in: query
+          description: Select steps these have to processed before this step. You would input ID of the step in this parameter.
+          required: false
+          type: string
+          format: string
+        - name: group
+          in: query
+          description: The steps belong which group. You would input ID of stepgroup.
+          required: true
+          type: {}
+          format: string
+      tags:
+        - Steps
+      responses:
+        '201':
+          description: Step response
+          schema:
+            $ref: '#/definitions/newStep'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/steps/{id}':
+    get:
+      description: >
+        Returns a user based on a single ID, if the user does not have access to
+        the steps.
+      operationId: findStepById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of step.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Steps
+      responses:
+        '200':
+          description: Step response
+          schema:
+            $ref: '#/definitions/step'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    delete:
+      description: deletes a single step based on the ID supplied
+      operationId: deleteStep
+      parameters:
+        - name: id
+          in: path
+          description: ID of step to delete
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Steps
+      responses:
+        '204':
+          description: step deleted
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    patch:
+      description: patch a single step based on the ID supplied
+      operationId: patchStep
+      parameters:
+        - name: id
+          in: path
+          description: ID of step to patch
+          required: true
+          type: integer
+          format: int64
+        - name: title
+          in: query
+          description: The title of ingredient.
+          required: true
+          type: string
+          format: string
+        - name: scheduler
+          in: query
+          description: "The platform you could choose such as ['SGE' or 'PBS' or 'LSF' or 'OTHER']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - SGE
+            - PBS
+            - LSF
+            - OTHER
+        - name: priority
+          in: query
+          description: "The priority you could choose such as  ['LOW' or 'NORMAL' or 'HIGH' or 'HIGHEST']."
+          required: true
+          type: string
+          format: string
+          enum:
+            - LOW
+            - NORMAL
+            - HIGH
+            - HIGHEST
+        - name: follows
+          in: query
+          description: Select steps these have to processed before this step. You would input ID of the step in this parameter.
+          required: false
+          type: string
+          format: string
+        - name: group
+          in: query
+          description: The steps belong which group. You would input ID of stepgroup.
+          required: true
+          type: {}
+          format: string
+      tags:
+        - Steps
+      responses:
+        '202':
+          description: step patched
+          schema:
+            $ref: '#/definitions/updateStep'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+            
+  /userfiles:
+    get:
+      summary: File Types
+      description: |
+        Returns all files from the system that the user could access to.
+      operationId: findUserfiles
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of file.
+          required: true
+          type: string
+          format: string
+        - name: server
+          in: query
+          description: "The server you put files such as in  ['AWS' or 'PMACS' or 'TESLA' or 'CAJAL' or 'OTHER']."
+          required: true
+          type: string
+          format: null
+          enum:
+            - AWS
+            - PMACS
+            - TESLA
+            - CAJAL
+            - OTHER
+        - name: path
+          in: query
+          description: The files locate on this path.
+          required: true
+          type: string
+          format: string
+        - name: models
+          in: query
+          description: The file belong on the models.
+          required: false
+          type: {}
+          format: string
+      tags:
+        - Userfiles
+      responses:
+        '200':
+          description: userfile response
+          schema:
+            type: {}
+            items:
+              $ref: '#/definitions/userfile'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: Creates a new file.
+      operationId: addUserfile
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: The name of file.
+          required: true
+          type: string
+          format: string
+        - name: server
+          in: query
+          description: "The server you put files such as in  ['AWS' or 'PMACS' or 'TESLA' or 'CAJAL' or 'OTHER']."
+          required: true
+          type: string
+          format: null
+          enum:
+            - AWS
+            - PMACS
+            - TESLA
+            - CAJAL
+            - OTHER
+        - name: path
+          in: query
+          description: The files locate on this path.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Userfiles
+      responses:
+        '201':
+          description: Userfile response
+          schema:
+            $ref: '#/definitions/newUserfile'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  '/userfiles/{id}':
+    get:
+      description: >
+        Returns a user based on a single ID, if the user does not have access to
+        the userfiles.
+      operationId: findUserfileById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of userfile.
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Userfiles
+      responses:
+        '200':
+          description: Userfile response
+          schema:
+            $ref: '#/definitions/userfile'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    delete:
+      description: deletes a single userfile based on the ID supplied
+      operationId: deleteUserfile
+      parameters:
+        - name: id
+          in: path
+          description: ID of file to delete
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Userfiles
+      responses:
+        '204':
+          description: userfile deleted
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    patch:
+      description: patch a single file based on the ID supplied
+      operationId: patchUserfile
+      parameters:
+        - name: id
+          in: path
+          description: ID of file to patch
+          required: true
+          type: integer
+          format: int64
+        - name: name
+          in: query
+          description: The name of file.
+          required: true
+          type: string
+          format: string
+        - name: server
+          in: query
+          description: "The server you put files such as in  ['AWS' or 'PMACS' or 'TESLA' or 'CAJAL' or 'OTHER']."
+          required: true
+          type: string
+          format: null
+          enum:
+            - AWS
+            - PMACS
+            - TESLA
+            - CAJAL
+            - OTHER
+        - name: path
+          in: query
+          description: The files locate on this path.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Userfiles
+      responses:
+        '202':
+          description: userfile patched
+          schema:
+            $ref: '#/definitions/updateUserfile'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'  
+  
+definitions:
+  category:
+    type: object
+    required:
+      - id
+      - name
+      - topic
+      - templates
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      topic:
+        type: string
+      templates:
+        type: {}
+  errorModel:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+  template:
+    type: object
+    required:
+      - id
+      - title
+    properties:
+      id:
+        type: integer
+        format: int64
+      title:
+        type: string
+      elements:
+        type: {}
+  module:
+    type: object
+    required:
+      - id
+      - name
+      - description
+      - scheduler
+      - inputformat
+      - outputformat
+      - parameters
+      - memory
+      - time
+      - step
+      - models
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      scheduler:
+        type: string
+      inputformat:
+        type: string
+      outputformat:
+        type: string
+      softwarecitation:
+        type: string
+      softwarelink:
+        type: string
+      parameters:
+        type: string
+      created:
+        type: string
+      memory:
+        type: string
+      time:
+        type: string
+      step:
+        type: {}
+      models:
+        type: {}
+  pipeline:
+    type: object
+    required:
+      - id
+      - name
+      - description
+      - stepgroups
+      - steps
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      stepgroups:
+        type: {}
+      steps:
+        type: string
+      created:
+        type: string
+  pipelinerecipe:
+    type: object
+    required:
+      - id
+      - name
+      - description
+      - resultpath
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      ingredients:
+        type: {}
+      stepgroups:
+        type: {}
+      equipment:
+        type: string
+      resultpath:
+        type: string
+      footnote:
+        type: string
+  newPipelinerecipe:
+    type: object
+    required:
+      - name
+      - description
+      - resultpath
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      ingredients:
+        type: {}
+      stepgroups:
+        type: {}
+      equipment:
+        type: string
+      resultpath:
+        type: string
+      footnote:
+        type: string
+  updatePipelinerecipe:
+    type: object
+    required:
+      - name
+      - description
+      - resultpath
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      ingredients:
+        type: {}
+      stepgroups:
+        type: {}
+      equipment:
+        type: string
+      inputpath:
+        type: string
+      resultpath:
+        type: string
+      footnote:
+        type: string
+  modelscript:
+    type: object
+    required:
+      - id
+      - name
+      - description
+      - inputformat
+      - outputformat
+      - parameters
+      - server
+      - scriptpath
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      inputformat:
+        type: string
+      outputformat:
+        type: string
+      parameters:
+        type: string
+      server:
+        type: string
+      created:
+        type: string
+      scriptpath:
+        type: string
+  newModelscript:
+    type: object
+    required:
+      - name
+      - description
+      - inputformat
+      - outputformat
+      - parameters
+      - server
+      - scriptpath
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      inputformat:
+        type: string
+      outputformat:
+        type: string
+      parameters:
+        type: string
+      server:
+        type: string
+      created:
+        type: string
+      scriptpath:
+        type: string
+  updateModelscript:
+    type: object
+    required:
+      - name
+      - description
+      - inputformat
+      - outputformat
+      - parameters
+      - server
+      - scriptpath
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      inputformat:
+        type: string
+      outputformat:
+        type: string
+      parameters:
+        type: string
+      server:
+        type: string
+      created:
+        type: string
+      scriptpath:
+        type: string
+## new api version 0.0.2 alpha
+
+  ingredientgroups:
+    type: object
+    required:
+      - id
+      - name
+      - topic
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      topic:
+        type: {}
+      ingredients:
+        type: {}
+      recipes:
+        type: {}
+  newIngredientgroup:
+    type: object
+    required:
+      - name
+      - topic
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      topic:
+        type: {}
+  updateIngredientgroup:
+    type: object
+    required:
+      - name
+      - topic
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      topic:
+        type: {}
+
+##        
+
+
+  ingredients:
+    type: object
+    required:
+      - id
+      - title
+      - server
+      - path
+      - format
+      - group
+    properties:
+      id:
+        type: integer
+        format: int64
+      title:
+        type: string
+      server:
+        type: {}
+      path:
+        type: string
+      format:
+        type: string
+      group:
+        type: {}
+  newIngredient:
+    type: object
+    required:
+      - title
+      - server
+      - path 
+      - format
+      - group
+    properties:
+      id:
+        type: integer
+        format: int64
+      title:
+        type: string
+      server:
+        type: {}
+      path:
+        type: string
+      format:
+        type: string
+      group:
+        type: {}
+  updateIngredient:
+    type: object
+    required:
+      - title
+      - server
+      - path
+      - format 
+      - group
+    properties:
+      id:
+        type: integer
+        format: int64
+      title:
+        type: string
+      server:
+        type: {}
+      path:
+        type: string
+      format:
+        type: string
+      group:
+        type: {}
+        
+#
+
+  stepgroups:
+    type: object
+    required:
+      - id
+      - name
+      - topic
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      topic:
+        type: {}
+      steps:
+        type: {}
+      recipes:
+        type: {}
+      functions:
+        type: {}
+  newStepgroup:
+    type: object
+    required:
+      - name
+      - topic
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      topic:
+        type: {}
+  updateStepgroup:
+    type: object
+    required:
+      - name
+      - topic
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      topic:
+        type: {}
+
+  steps:
+    type: object
+    required:
+      - id
+      - title
+      - scheduler
+      - priority
+      - group
+    properties:
+      id:
+        type: integer
+        format: int64
+      title:
+        type: string
+      scheduler:
+        type: string
+      priority:
+        type: string
+      follows:
+        type: {}
+      group:
+        type: {}
+      modules:
+        type: {}
+  newStep:
+    type: object
+    required:
+      - title
+      - scheduler
+      - priority
+      - group
+    properties:
+      title:
+        type: string
+      scheduler:
+        type: string
+      priority:
+        type: string
+      follows:
+        type: {}
+      group:
+        type: {}
+
+  updateStep:
+    type: object
+    required:
+      - title
+      - scheduler
+      - priority
+      - group
+    properties:
+      id:
+        type: integer
+        format: int64
+      title:
+        type: string
+      scheduler:
+        type: string
+      priority:
+        type: string
+      follows:
+        type: {}
+      group:
+        type: {}
+#file
+  userfiles:
+    type: object
+    required:
+      - id
+      - name
+      - server
+      - path
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      server:
+        type: string
+      path:
+        type: string
+      models:
+        type: string
+  newUserfile:
+    type: object
+    required:
+      - name
+      - server
+      - path
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      server:
+        type: string
+      path:
+        type: string
+  updateUserfile:
+    type: object
+    required:
+      - name
+      - server
+      - path
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      server:
+        type: string
+      path:
+        type: string
