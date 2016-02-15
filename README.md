@@ -42,8 +42,8 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'YOUR SECRET'
 * django-filebrowser(3.6.1)
 * djangorestframework-yaml(1.0.2)
 
-###Request
-About detail Docs: import omicspipeapi.yaml with http://editor.swagger.io/.
+##Request
+About detail Docs: import omicspipeapi_0.0.2.yaml with http://editor.swagger.io/.
 --------
 <table>
  <tr>
