@@ -52,30 +52,7 @@ About detail Docs: import omicspipeapi_0.0.2.yaml with http://editor.swagger.io/
    <th>Parameters</th>
    <th>Description</th>
  </tr>
-  <tr>
-  <td>/users/</td>
-  <td>GET</td>
-  <td></td>
-  <td>Fetch All Users</td>
- </tr>
- <tr>
-  <td>/users/:id</td>
-  <td>GET</td>
-  <td></td>
-  <td>Fetch a User</td>
- </tr>
- <tr>
-  <td>/groups/</td>
-  <td>GET</td>
-  <td></td>
-  <td>Fetch All Groups</td>
- </tr>
- <tr>
-  <td>/groups/:id</td>
-  <td>GET</td>
-  <td></td>
-  <td>Fetch a Group</td>
- </tr>
+
  <tr>
   <td>/categories/</td>
   <td>GET</td>
@@ -127,7 +104,7 @@ About detail Docs: import omicspipeapi_0.0.2.yaml with http://editor.swagger.io/
  <tr>
   <td>/pipelinerecipes/</td>
   <td>POST</td>
-  <td>name, description, ingredient, direction, equipment, rawdata, result, footnote</td>
+  <td>name, description, ingredients, steps, equipment, resultpath, footnote</td>
   <td>Create a New pipline recipe</td>
  </tr>
  <tr>
@@ -139,7 +116,7 @@ About detail Docs: import omicspipeapi_0.0.2.yaml with http://editor.swagger.io/
  <tr>
  <td>/pipelinerecipes/:id</td>
   <td>PATCH</td>
-  <td>name, description, ingredient, direction, equipment, rawdata, result, footnote</td>
+  <td>name, description, ingredients, steps, equipment, resultpath, footnote</td>
   <td>Update a pipeline recipe</td>
  </tr>
  <tr>
@@ -157,7 +134,7 @@ About detail Docs: import omicspipeapi_0.0.2.yaml with http://editor.swagger.io/
  <tr>
   <td>/modelscripts/</td>
   <td>POST</td>
-  <td>name, description, inputformat, outformat, parameters, datapath</td>
+  <td>name, description, inputformat, outformat, parameters, server, scriptpath</td>
   <td>Create a New modelscript</td>
  </tr>
  <tr>
@@ -169,7 +146,7 @@ About detail Docs: import omicspipeapi_0.0.2.yaml with http://editor.swagger.io/
  <tr>
  <td>/modelscripts/:id</td>
   <td>PATCH</td>
-  <td>name, description, inputformat, outformat, parameters, datapath</td>
+  <td>name, description, inputformat, outformat, parameters, server, scriptpath</td>
   <td>Update a modelscript</td>
  </tr>
  <tr>
@@ -184,7 +161,157 @@ About detail Docs: import omicspipeapi_0.0.2.yaml with http://editor.swagger.io/
   <td></td>
   <td>Delete a modelscript</td>
  </tr>
-
+ <tr>
+ <td>/ingredients/</td>
+  <td>POST</td>
+  <td>title, topic, server, path, format, group</td>
+  <td>Create a New ingredient</td>
+ </tr>
+ <tr>
+  <td>/ingredients/</td>
+  <td>GET</td>
+  <td></td>
+  <td>Fetch All ingredients</td>
+ </tr>
+ <tr>
+ <td>/ingredients/:id</td>
+  <td>PATCH</td>
+  <td>title, topic, server, path, format, group</td>
+  <td>Update a ingredient</td>
+ </tr>
+ <tr>
+  <td>/ingredients/:id</td>
+  <td>GET</td>
+  <td></td>
+  <td>Fetch a ingredient</td>
+ </tr>
+ <tr>
+  <td>/ingredients/:id</td>
+  <td>DELETE</td>
+  <td></td>
+  <td>Delete a ingredient</td>
+ </tr>
+ <tr>
+  <td>/ingredientgroups/</td>
+  <td>POST</td>
+  <td>name, topic, ingredients, recipes</td>
+  <td>Create a New ingredientgroup</td>
+ </tr>
+ <tr>
+  <td>/ingredientgroups/</td>
+  <td>GET</td>
+  <td></td>
+  <td>Fetch All ingredientgroups</td>
+ </tr>
+ <tr>
+ <td>/ingredients/:id</td>
+  <td>PATCH</td>
+  <td>name, topic, ingredients, recipes</td>
+  <td>Update a ingredient</td>
+ </tr>
+ <tr>
+  <td>/ingredientgroups/:id</td>
+  <td>GET</td>
+  <td></td>
+  <td>Fetch a ingredientgroup</td>
+ </tr>
+ <tr>
+  <td>/ingredientgroups/:id</td>
+  <td>DELETE</td>
+  <td></td>
+  <td>Delete a ingredientgroup</td>
+ </tr>
+ <tr>
+  <td>/steps/</td>
+  <td>POST</td>
+  <td>title, scheduler, priority, follows, group</td>
+  <td>Create a New step</td>
+ </tr>
+ <tr>
+  <td>/steps/</td>
+  <td>GET</td>
+  <td></td>
+  <td>Fetch All steps</td>
+ </tr>
+ <tr>
+ <td>/steps/:id</td>
+  <td>PATCH</td>
+  <td>title, scheduler, priority, follows, group</td>
+  <td>Update a step</td>
+ </tr>
+ <tr>
+  <td>/steps/:id</td>
+  <td>GET</td>
+  <td></td>
+  <td>Fetch a step</td>
+ </tr>
+ <tr>
+  <td>/steps/:id</td>
+  <td>DELETE</td>
+  <td></td>
+  <td>Delete a step</td>
+ </tr>
+ <tr>
+  <td>/stepgroups/</td>
+  <td>POST</td>
+  <td>name, topic, steps, recipes, functions</td>
+  <td>Create a New stepgroup</td>
+ </tr>
+ <tr>
+  <td>/stepgroups/</td>
+  <td>GET</td>
+  <td></td>
+  <td>Fetch All stepgroups</td>
+ </tr>
+ <tr>
+ <td>/stepgroups/:id</td>
+  <td>PATCH</td>
+  <td>name, topic, steps, recipes, functions</td>
+  <td>Update a stepgroups</td>
+ </tr>
+ <tr>
+  <td>/stepgroups/:id</td>
+  <td>GET</td>
+  <td></td>
+  <td>Fetch a stepgroup</td>
+ </tr>
+ <tr>
+  <td>/stepgroups/:id</td>
+  <td>DELETE</td>
+  <td></td>
+  <td>Delete a stepgroup</td>
+ </tr>
+ <tr>
+  <td>/userfiles/</td>
+  <td>POST</td>
+  <td>name, server, path, models</td>
+  <td>Create a New userfile</td>
+ </tr>
+ <tr>
+  <td>/userfiles/</td>
+  <td>GET</td>
+  <td></td>
+  <td>Fetch All userfiles</td>
+ </tr>
+ <tr>
+ <td>/userfiles/:id</td>
+  <td>PATCH</td>
+  <td>name, server, path, models</td>
+  <td>Update a userfile</td>
+ </tr>
+ <tr>
+  <td>/userfiles/:id</td>
+  <td>GET</td>
+  <td></td>
+  <td>Fetch a userfile</td>
+ </tr>
+ <tr>
+  <td>/userfiles/:id</td>
+  <td>DELETE</td>
+  <td></td>
+  <td>Delete a userfile</td>
+ </tr>
+ 
 
 ### New API version 0.0.3 are coming~
 
